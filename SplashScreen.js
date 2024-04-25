@@ -1,7 +1,12 @@
 import React from 'react'
 import { Text,View,StyleSheet, Image, Button, TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
 
 export default function SplashScreen() {
+
+  const navigation = useNavigation();
+
+
   return (
     <View style={styles.container}>
 
@@ -21,7 +26,7 @@ Level up your skills with ease and advance in your career
 </Text>
 
 
-<TouchableOpacity style={styles.buttonStyle} onPress={() => console.log('Button pressed!')}>
+<TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Tabs')}>
         <Text  style={styles.textButton}  >Start Your Journey</Text>
       </TouchableOpacity>
         </View>
@@ -31,30 +36,32 @@ Level up your skills with ease and advance in your career
 
 const styles = StyleSheet.create({
     container: {
-      marginTop : 120 ,
-      backgroundColor: '#1F1244', // Corrected color code
+      flex : 1 ,
+     
+      backgroundColor: '#1F1244',
       alignItems: 'center',
       justifyContent: 'center',
     },
 
     title : {
-        color: 'white',
+    color: 'white',
     fontSize : 25 ,
     fontWeight : 'bold' ,
-    fontFamily :'Helvetica'
+    fontFamily : 'sans-serif'
+    
     } , 
 
     title2 : {
         color: 'white',
     fontSize : 16 ,
     marginTop : 40 ,
-    fontFamily :'Helvetica'
+   fontFamily : 'sans-serif'
     }, 
     title3 : {
         color: 'white',
     fontSize : 16 ,
     marginTop : 45 ,
-    fontFamily :'Helvetica',
+   fontFamily : 'sans-serif',
     justifyContent : 'center',
 textAlign :'center'
     
