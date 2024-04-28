@@ -1,5 +1,5 @@
 import React , { useState, useEffect } from 'react'
-import { View , StyleSheet, Text,TouchableOpacity , Image } from 'react-native'
+import { View , StyleSheet, Text,TouchableOpacity , Image, ScrollView } from 'react-native'
 import CoursesSection from './CourseSection'
 import { useNavigation } from '@react-navigation/native'
 import { getCoursesByCategory } from './CourseAPI'
@@ -20,6 +20,7 @@ export default function CoursesExplorer( {route} ) {
           try {
               const data = await getCoursesByCategory(category);
               setCoursesData(data);
+              console.log ("Data Courses : ",data)
           } catch (error) {
               setError(error);
           } finally {
@@ -54,19 +55,20 @@ export default function CoursesExplorer( {route} ) {
 </View>
         <Text style={styles.title2}> Choose the {category} you want to learn </Text>
 
+        <ScrollView>
 { coursesData.length === 0 ? (<Text style={styles.notFound}> No Courses published yet... ! </Text> ) : 
 (
   coursesData.map((course, index)=> (
     <CoursesSection 
     key={index}
+    idCourse={course._id}
     title= {course.title}
   description={course.description}
   />
   ))
 ) }
 
-
-
+</ScrollView>
 
     </View>
   )

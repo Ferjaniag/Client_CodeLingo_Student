@@ -1,7 +1,6 @@
 import axios from "axios";
 
 
-
 export const getFrontEndCourses = async () => {
     try {
         const response = await axios.get(`http://localhost:5002/get_FrontEnd_courses`);
@@ -36,8 +35,9 @@ export const getProgLangCourses = async () => {
 
 export const getCoursesByCategory = async (category) => {
     try {
-      // adresse IPv4
-        const response = await axios.get(`http://192.168.100.3:5002/get_courses_by_category/${category}`);
+      
+      
+        const response = await axios.get(`${process.env.API_URL}/get_courses_by_category/${category}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching courses data :', error);

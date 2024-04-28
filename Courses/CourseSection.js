@@ -3,11 +3,15 @@ import React from 'react'
 
 import { View , StyleSheet , Text, TouchableOpacity} from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
-export default function CoursesSection({ title, description }) {
+export default function CoursesSection({ idCourse ,title, description}) {
+
+  const navigation=useNavigation() ;
+
   return (
     <View style= {styles.container}>
- <TouchableOpacity  onPress={() => console.log("card clickable !")}>
+ <TouchableOpacity  onPress={() => navigation.navigate('Units' , { courseID: idCourse , course : title})}>
 
 <LinearGradient
       colors={['#7659F1', 'rgba(118, 89, 241, 0.28)']}
@@ -47,7 +51,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5, // For Android shadow
     borderRadius: 15,
-     height : 180,
+     height : 150,
+     width : 340 ,
      alignItems : 'center', 
      justifyContent :'center'
     },
