@@ -7,7 +7,10 @@ import { getUnitsByIdCourse } from './UnitAPI'
 
 export default function UnitsScreen( {route} ) {
 
-
+  const navigation=useNavigation()
+  const courseID= route.params.courseID
+  
+  const course = route.params.course
 
 
  const [unitsData, setUnitsData] = useState([]);
@@ -45,10 +48,7 @@ export default function UnitsScreen( {route} ) {
 
 
 
-  const navigation=useNavigation()
-  const courseID= route.params.courseID
   
-  const course = route.params.course
   return (
     <View style={styles.container}>
     <View style= {styles.header}> 
@@ -74,7 +74,8 @@ unitsData.map((unit,index)=> (
 <UnitSection 
 key={index}
 unitID={unit._id}
-unitName={unit.title}/>
+unitName={unit.title}
+courseName={course}/>
 ))
 
 ) }

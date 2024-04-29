@@ -1,16 +1,29 @@
-import React from 'react'
-
-import { View , StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { View , StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import Svg, { Circle, Rect } from 'react-native-svg';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
+
+
 import { useNavigation } from '@react-navigation/native';
 
-export default function UnitSection(  {unitName, unitID, courseName}) {
+const PlayIcon = require('../assets/play.png');
+const LockIcon = require('../assets/lock.png');
+const DoneIcon = require('../assets/done.png');
+
+export default function LessonBloc(  {lessonNumber, isDone}) {
   
   const navigation=useNavigation()
+
+  let iconSource;
+
+  if (isDone && lessonNumber === '1') {
+    iconSource = DoneIcon; 
+  } else if (lessonNumber === '1') {
+    iconSource = PlayIcon;
+  } else {
+    iconSource = LockIcon;
+  }
+
   return (
-    <TouchableOpacity  onPress={() => navigation.navigate('Over-View-Lessons', {courseName : courseName, unitName: unitName , unitID : unitID})}>
+    <TouchableOpacity  onPress={() => console.log("Lesson Bloc Clicked !")}>
     <View style={styles.sectionContainer}>
        
       <LinearGradient
@@ -21,25 +34,12 @@ export default function UnitSection(  {unitName, unitID, courseName}) {
     >
 
    
-        <Text style={styles.unit}> {unitName} </Text>
-        <View style={styles.progressContainer}>
-        
-        <AnimatedCircularProgress
-  size={40}
-  width={6}
-  fill={0}
-  tintColor="#35E9BC"
-  backgroundColor="#332462">
-  {
-    (fill) => (
-      <Text style={styles.progress}>
-      0%
-      </Text>
-    )
-  }
-</AnimatedCircularProgress>
-
-  </View>
+        <Text style={styles.lesson}> Lesson {lessonNumber} </Text>
+        <Image
+       source={iconSource}
+        style = {styles.iconStart}
+      />
+       
      </LinearGradient>
     
      
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
       backgroundColor: 'rgba(118, 89, 241, 0.28)', 
       alignItems: 'center',
      // justifyContent: 'center',
-     width : 340 ,
-     height : 75 , 
+     width : 90 ,
+     height : 90 , 
      marginTop: 25,
      padding: 10,
     
@@ -69,17 +69,17 @@ const styles = StyleSheet.create({
    shadowOpacity: 0.25,
    shadowRadius: 4,
    elevation: 5, // For Android shadow
-   borderRadius: 15,
+   borderRadius: 20,
 
       
 
     } ,
-    unit : {
+    lesson : {
         color :'white',
-        fontSize: 16 ,
+        fontSize: 13 ,
         fontWeight : 'bold', 
         fontFamily : 'sans-serif' , 
-        left : 10
+       
     },
     box2 : {
         justifyContent : 'center',
@@ -87,19 +87,13 @@ const styles = StyleSheet.create({
         alignItems:"center",
         flex: 1 ,
         borderRadius : 20 , 
-        width : 320 ,
+        width : 70 ,
         height : 65 , 
-        flexDirection :'row'
+        flexDirection :'column',
         
         
     },
-    progress : {
-        color :'white',
-        fontSize: 12 ,
-        fontWeight : 'bold', 
-        fontFamily : 'sans-serif' , 
-      
-    },
+   
     progressContainer : {
         flex: 1,
          alignItems: 'flex-end',
@@ -107,5 +101,10 @@ const styles = StyleSheet.create({
          
         
       
+    },
+
+    iconStart :{
+        width:25 ,
+        height : 25
     }
 })
