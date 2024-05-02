@@ -2,7 +2,7 @@ import React from 'react'
 
 import { View , StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import Svg, { Circle, Rect } from 'react-native-svg';
+
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { useNavigation } from '@react-navigation/native';
 

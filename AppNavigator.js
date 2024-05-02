@@ -7,6 +7,7 @@ import CoursesExplorer from './Courses/CoursesExplorer';
 import TabNavigation from './TabNavigation';
 import UnitsScreen from './Units/UnitsScreen';
 import OverViewLessons from './Lessons/OverViewLessons';
+import EnrollLessonScreen from './Enroll/EnrollLessonScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +20,7 @@ const AppNavigator = () => (
         <Stack.Screen name="Tabs" component={TabNavigation} />
         <Stack.Screen name="Units" component={UnitsScreen} />
         <Stack.Screen name="Over-View-Lessons" component={OverViewLessons} />
-       
+        <Stack.Screen name="Enroll-Lesson" component={EnrollLessonScreen} />
     </Stack.Navigator>
 
    

@@ -23,6 +23,7 @@ export default function UnitsScreen( {route} ) {
           try {
               const data = await getUnitsByIdCourse(courseID);
               setUnitsData(data)
+              console.log("Units data", unitsData)
           } catch (error) {
               setError(error);
           } finally {

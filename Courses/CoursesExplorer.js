@@ -20,9 +20,11 @@ export default function CoursesExplorer( {route} ) {
           try {
               const data = await getCoursesByCategory(category);
               setCoursesData(data);
+              console.log("data ", data)
               
           } catch (error) {
               setError(error);
+              console.log("ERRROOORR ",error)
           } finally {
               setIsLoading(false);
           }

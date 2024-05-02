@@ -71,7 +71,7 @@ style= {styles.progress}
   {
     (fill) => (
       <Text style={styles.progressNumber}>
-      0%
+     0%
       </Text>
     )
   }
@@ -80,20 +80,22 @@ style= {styles.progress}
 
 
 <View style={styles.blocContainer}>
-<LessonBloc lessonNumber="1"
+
+<ScrollView>
+
+
+{ lessonsData.length === 0 ? <Text style={styles.notFound}> No lessons published yet !!! </Text> : (
+  lessonsData.map((lesson,index)=> (
+    <LessonBloc lessonNumber={index+1}
+    idLesson={lesson._id}
+    lessonName={lesson.title}
 isDone={false}
 />
-
-    <View style={{ flexDirection: 'row', alignItems: 'center',marginVertical: 5 }}>
-      <LessonBloc lessonNumber="2" isDone={false} />
-      <View style={{ marginHorizontal: 35 }} /> 
-      <LessonBloc lessonNumber="3" isDone={false} />
-    </View>
-
-    </View>
+  ))
+)}
     
-
-
+    </ScrollView>
+   </View>
 
 
 
@@ -160,8 +162,12 @@ const styles = StyleSheet.create({
 
       },
       blocContainer : {
-        alignContent : 'center', 
-        alignItems : 'center'
+      //  alignContent : 'center', 
+      //  alignItems : 'center'
+      },
+      notFound : {
+        color : 'white' ,
+        size : 20
       }
      
 })

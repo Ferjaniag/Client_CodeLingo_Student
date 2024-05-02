@@ -10,3 +10,13 @@ export const getLessonsByUnit = async (unitID) => {
         
     }
 };
+
+export const getLessonByID = async (lessonID) => {
+    try {
+        const response = await axios.get(`${process.env.API_URL}/get_lesson/${lessonID}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching lesson data :', error);
+        
+    }
+};
