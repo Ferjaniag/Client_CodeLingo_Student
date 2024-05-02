@@ -12,9 +12,8 @@ import EnrollLessonScreen from './Enroll/EnrollLessonScreen';
 const Stack = createStackNavigator();
 
 const AppNavigator = () => (
-    
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+     <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Road-Map" component={RoadMapExplorer} />
         <Stack.Screen name="Courses" component={CoursesExplorer} />
         <Stack.Screen name="Tabs" component={TabNavigation} />
@@ -26,7 +25,4 @@ const AppNavigator = () => (
    
 );
 
-
 export default AppNavigator;
-
-
