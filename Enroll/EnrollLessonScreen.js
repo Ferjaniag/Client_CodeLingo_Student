@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import { getLessonByID } from '../Lessons/LessonAPI';
 import Html from 'react-native-render-html';
+import { getExercisesTByIDLesson } from './ExerciseAPI';
 
 export default function EnrollLessonScreen({route}) {
 
@@ -17,9 +18,10 @@ const lessonName=route.params.lessonName
 const lessonNumber=route.params.lessonNumber
 const lessonID=route.params.lessonID
 
-const [lessonData,setLessonData]=useState({})
+const [lessonData,setLessonData]=useState({}) ; 
 const [isLoading, setIsLoading] = useState(false);
 const [error, setError] = useState(null);
+
 
 
 useEffect(() => {
@@ -27,8 +29,9 @@ useEffect(() => {
         setIsLoading(true);
         try {
             const data = await getLessonByID(lessonID);
+          
             setLessonData(data.content)
-            console.log("Lesson Data Content : ",data.content)
+         
         } catch (error) {
             setError(error);
         } finally {
@@ -85,7 +88,8 @@ if (error) {
          <TouchableOpacity
           style={styles.buttonStyle}
           onPress={() => {
-          console.log('Next')
+         navigation.navigate('Enroll-Exercise',{lessonName:lessonName ,
+           lessonNumber:lessonNumber , lessonID:lessonID})
           }}
         >
           <Text style={styles.textButton}>Next</Text>

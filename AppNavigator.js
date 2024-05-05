@@ -8,11 +8,13 @@ import TabNavigation from './TabNavigation';
 import UnitsScreen from './Units/UnitsScreen';
 import OverViewLessons from './Lessons/OverViewLessons';
 import EnrollLessonScreen from './Enroll/EnrollLessonScreen';
+import EnrollExercise from './Enroll/EnrollExercise';
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
+       
      <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Road-Map" component={RoadMapExplorer} />
         <Stack.Screen name="Courses" component={CoursesExplorer} />
@@ -20,6 +22,7 @@ const AppNavigator = () => (
         <Stack.Screen name="Units" component={UnitsScreen} />
         <Stack.Screen name="Over-View-Lessons" component={OverViewLessons} />
         <Stack.Screen name="Enroll-Lesson" component={EnrollLessonScreen} />
+        <Stack.Screen name="Enroll-Exercise" component={EnrollExercise} />
     </Stack.Navigator>
 
    
