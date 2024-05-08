@@ -26,7 +26,7 @@ Level up your skills with ease and advance in your career
 </Text>
 
 
-<TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Tabs')}>
+<TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('Signup')}>
         <Text  style={styles.textButton}  >Start Your Journey</Text>
       </TouchableOpacity>
         </View>

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, TouchableOpacity } from "react-native";
 import Text from "@kaloraat/react-native-text";
 import UserInput from "../components/UserInput";
 import RoundedButton from "../components/RoundedButton";
 import axios from "axios";
+import { useNavigation } from '@react-navigation/native';
+
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -11,6 +13,8 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
+
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -32,7 +36,7 @@ const Signup = () => {
     console.log(name, email, password, confirmPassword);
 
     try {
-      const { data } = await axios.post("http://192.168.1.104:5002/signup", {
+      const { data } = await axios.post(`${process.env.API_URL}/signup`, {
         username: name,
         email: email,
         password: password,
@@ -50,8 +54,8 @@ const Signup = () => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
-      <Text title center style={{ marginBottom: 30 }}>
+    <View style={{ flex: 1, justifyContent: "center", backgroundColor:'#1F1244' }}>
+      <Text title center bold style={{ marginBottom: 30, color:'white' }}>
         Signup
       </Text>
 
@@ -83,6 +87,10 @@ const Signup = () => {
         handleSubmit={handleSubmit}
         loading={loading}
       />
+
+<TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <Text center style={{ marginTop: 10, color: '#35e9bc' }}>Already have an account? Login</Text>
+      </TouchableOpacity>
     </View>
   );
 };
