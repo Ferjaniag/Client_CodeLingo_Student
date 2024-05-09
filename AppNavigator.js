@@ -10,9 +10,16 @@ import OverViewLessons from './Lessons/OverViewLessons';
 import EnrollLessonScreen from './Enroll/EnrollLessonScreen';
 import EnrollExercise from './Enroll/EnrollExercise';
 
+import Signup from "./signup/Signup";
+import Login from "./login/Login";
+import Welcome from "./login/Welcome";
+import { AuthContext, AuthProvider } from "./context/auth";
+
+
 const Stack = createStackNavigator();
 
 const AppNavigator = () => (
+  <AuthProvider>
   <Stack.Navigator screenOptions={{ headerShown: false }}>
        
      <Stack.Screen name="Splash" component={SplashScreen} />
@@ -23,7 +30,13 @@ const AppNavigator = () => (
         <Stack.Screen name="Over-View-Lessons" component={OverViewLessons} />
         <Stack.Screen name="Enroll-Lesson" component={EnrollLessonScreen} />
         <Stack.Screen name="Enroll-Exercise" component={EnrollExercise} />
+
+        <Stack.Screen name='Signup' component={Signup} />
+          <Stack.Screen name='Login' component={Login} />
+          <Stack.Screen name='Welcome' component={Welcome} />
+
     </Stack.Navigator>
+    </AuthProvider>
 
    
 );
