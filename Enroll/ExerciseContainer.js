@@ -4,7 +4,7 @@ import { View , StyleSheet , ScrollView, Text} from 'react-native'
 import Checkbox from 'expo-checkbox';
 import RadioGroup from 'react-native-radio-buttons-group';
 
-export default function ExerciseContainer({exercise}) {
+export default function ExerciseContainer({exercise, onAnswerVerification}) {
   
     const [isMultipleChoiceExercises, setIsMultipleChoiceExercises]= useState(false) ;
     const [iseSingleChoiceExercises, setIsSingleChoiceExercises]= useState(false) ; 
@@ -12,6 +12,8 @@ export default function ExerciseContainer({exercise}) {
     const [selectedId, setSelectedId] = useState();
     const [radio_props,setRadioProps] = useState([]) ;
     const [options_multiple,setOptionsMultiple] = useState([]) ;
+    const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
+    const [arrayChecked,setArrayChecked] = useState([])
    
 
 
@@ -23,6 +25,8 @@ useEffect(()=> {
   setSelectedId(undefined);
   setRadioProps([]);
   setOptionsMultiple([]);
+
+  console.log("exercise type",exercise.type)
     if (exercise.type==='Multiple Choice') {
         setIsMultipleChoiceExercises(true) ;
       
@@ -47,17 +51,46 @@ useEffect(()=> {
 },[exercise])
    
 
-    const handleSelectedRadio =(si) => {
-      setSelectedId(si) ; 
-      console.log("selected id",selectedId) ;
+    const handleSelectedRadio =(value) => {
+      setSelectedId(value) ; 
+      const selectedRadioValue = radio_props[value].value // Access the value of the selected radio button
+
+      if (selectedRadioValue=== true) {
+        setIsAnswerCorrect(true);
+
+        onAnswerVerification(true)
+      } else {
+        setIsAnswerCorrect(false);
+
+        onAnswerVerification(false)
+      }
+     
     }
     
     const handleCheckboxChange = (index) => {
-        const updatedArray = [...isCheckedArray];
-        updatedArray[index] = !updatedArray[index];
-        setIsCheckedArray(updatedArray);
-      };   
-
+      const updatedArray = [...isCheckedArray];
+      updatedArray[index] = !updatedArray[index];
+      setIsCheckedArray(updatedArray);
+    
+      if (updatedArray[index]) {
+        arrayChecked.push(options_multiple[index].value);
+      } else {
+        const valueIndex = arrayChecked.indexOf(options_multiple[index].value);
+        if (valueIndex !== -1) {
+          arrayChecked.splice(valueIndex, 1);
+        }
+      }
+    console.log("array checked", arrayChecked)
+      if (arrayChecked.includes(false)) {
+        setIsAnswerCorrect(false);
+        onAnswerVerification(false);
+      }
+      else {
+        setIsAnswerCorrect(true);
+        onAnswerVerification(true);
+      }
+    };  
+     
       
 
   return (
@@ -72,7 +105,7 @@ useEffect(()=> {
      
   <RadioGroup 
     radioButtons={radio_props} 
-    onPress={(si)=> handleSelectedRadio(si)}
+    onPress={(value) => handleSelectedRadio(value)}
     selectedId={selectedId}
     containerStyle={styles.radioButtons}
   />

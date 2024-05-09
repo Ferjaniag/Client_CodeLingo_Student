@@ -31,6 +31,8 @@ useEffect(() => {
             const data = await getLessonByID(lessonID);
           
             setLessonData(data.content)
+
+            console.log("lesson data",lessonData)
          
         } catch (error) {
             setError(error);

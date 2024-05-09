@@ -86,7 +86,9 @@ style= {styles.progress}
 
 { lessonsData.length === 0 ? <Text style={styles.notFound}> No lessons published yet !!! </Text> : (
   lessonsData.map((lesson,index)=> (
-    <LessonBloc lessonNumber={index+1}
+    <LessonBloc 
+    key={index}
+    lessonNumber={index+1}
     idLesson={lesson._id}
     lessonName={lesson.title}
 isDone={false}

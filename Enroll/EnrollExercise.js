@@ -4,8 +4,15 @@ import { useNavigation } from '@react-navigation/native'
 import * as Progress from 'react-native-progress';
 import RightButton from '../components/RightButton';
 import LeftButton from '../components/LeftButton';
-import { getExercisesTByIDLesson } from './ExerciseAPI';
+import { getExercisesByIDLesson } from './ExerciseAPI';
 import ExerciseContainer from './ExerciseContainer';
+import CorrectAnswer from '../components/CorrectAnswer';
+import PrbolemSolvExercise from './ProblemSolvExercise';
+import Dialog from "react-native-dialog";
+import InCorrectAnswer from '../components/InCorrectAnswer';
+import DoneExercise from './DoneExercises';
+
+
 
 
 export default function EnrollExercise({ route }) {
@@ -19,12 +26,31 @@ export default function EnrollExercise({ route }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentExercise, setCurrentExercise] = useState();
   const [error, setError] = useState(null);
+  const [visibleCheck, setVisibleCheck] = useState(false);
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
+  const [isDoneExercises, setIsDoneExercises] = useState(false);
+  const [pourcentage,setPourcentage] = useState(0.2); 
 
-  console.log("lesson id ", lessonID);
+  const handleAnswerVerification = (isCorrect) => {
+    setIsAnswerCorrect(isCorrect);
+
+  };
+
+   const showDialog = () => {
+   
+    setVisibleCheck(true);
+   
+  };
+
+  const CloseCheck = () => {
+    setVisibleCheck(false);
+  };
+
+console.log("lesson id ", lessonID);
 
   const fetchData = async () => {
     try {
-      const data = await getExercisesTByIDLesson(lessonID);
+      const data = await getExercisesByIDLesson(lessonID);
       setExercisesData(data);
     } catch (error) {
       setError(error);
@@ -36,16 +62,36 @@ export default function EnrollExercise({ route }) {
   }, [lessonID]);
 
   useEffect(() => {
-    // Ensure exercisesData has been fetched and currentIndex is within bounds
+   
     if (exercisesData.length > 0 && currentIndex < exercisesData.length) {
       setCurrentExercise(exercisesData[currentIndex]);
     }
   }, [currentIndex, exercisesData]);
 
-  // Function to handle navigation to the next exercise
+ 
+
+const CheckAnswer=()=> {
+
+  console.log("correct answer : ",isAnswerCorrect)
+  setVisibleCheck(true);
+ 
+ 
+
+}
+
   const handleNextExercise = () => {
+
+    setVisibleCheck(false) ;
     if (currentIndex < exercisesData.length - 1) {
       setCurrentIndex(currentIndex + 1);
+
+      const percount=  pourcentage + currentIndex / exercisesData.length ; 
+      console.log("pourcentage ",percount);
+      setPourcentage(percount);
+
+    } else {
+    setIsDoneExercises(true);
+    setPourcentage(1);
     }
   };
 
@@ -69,31 +115,76 @@ export default function EnrollExercise({ route }) {
 
       <View style={styles.exerciseContainer} >
 
-        <Progress.Bar progress={0.1} width={350} color={'#35E9BC'} />
+        <Progress.Bar progress={pourcentage} width={350} color={'#35E9BC'} />
         <View style={styles.exerciseContent}>
 
-        {currentExercise ? (
-    <ExerciseContainer
-      key={currentIndex}
-      exercise={currentExercise}
-    />
-  ) : (
+   
+      
+
+
+        <Dialog.Container visible={visibleCheck} contentStyle={styles.dialog}>
+   
+    <Dialog.Description style={styles.descDialog}>
+    {isAnswerCorrect ? <CorrectAnswer /> : <InCorrectAnswer />}
+
+   
+   
+    </Dialog.Description>
+    {isAnswerCorrect ?  <Dialog.Button  style={styles.labelDialog} label="Next"  onPress={() => handleNextExercise()}  /> 
+  :  <Dialog.Button  style={styles.labelDialog} label="Try Again"  onPress={() => CloseCheck()}  />  
+  }
+   
+  </Dialog.Container>
+
+   
+      
+   {isDoneExercises ? (
+  <DoneExercise />
+) : (
+  !currentExercise ? (
     <Text>Loading...</Text>
-  )}
+  ) : (
+    currentExercise.type === 'Single Choice' || currentExercise.type === 'Multiple Choice' ? (
+      <ExerciseContainer
+        key={currentIndex}
+        exercise={currentExercise}
+        onAnswerVerification={handleAnswerVerification}
+      />
+    ) : currentExercise.type === 'Problem Solving' ? (
+      <PrbolemSolvExercise
+        key={currentIndex}
+        exercise={currentExercise}
+        onAnswerVerification={handleAnswerVerification}
+      />
+    ) : (
+      <Text>Loading...</Text>
+    )
+  )
+)}
+
+      
+    
 
 
-          <View style={styles.buttonGroup}>
-            <LeftButton />
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              onPress={() => handleNextExercise()}
-            >
-              <Text style={styles.textButton}>Check</Text>
+        
+        {isDoneExercises === false ? 
+           <View style={styles.buttonGroup}>
+           <LeftButton />
+           <TouchableOpacity
+             style={styles.buttonStyle}
+           //  onPress={() => handleNextExercise()}
+           onPress={() => CheckAnswer()}
+           >
+             <Text style={styles.textButton}>Check</Text>
 
-            </TouchableOpacity>
-            <RightButton isDoneCheck={true} />
+           </TouchableOpacity>
+           <RightButton isDoneCheck={false} />
 
-          </View>
+         </View>
+        : null}
+       
+        
+       
         </View>
       </View>
     </View>
@@ -188,7 +279,35 @@ const styles = StyleSheet.create({
       fontSize : 15 , 
 
     },
+   titleDialog : {
+    color : '#1F1244' , 
+    fontFamily : 'sans-serif',
+    fontSize : 15 , 
+  }, 
+  descDialog : {
+    color : '#1F1244' , 
+    fontFamily : 'sans-serif',
+    fontSize : 12 , 
+  }, 
+  
+  labelDialog : {
+    color : '#7659F1' , 
+    fontFamily : 'sans-serif',
+    fontSize : 15 , 
+  } ,
+  
+  dialog : {
    
+    borderRadius : 10 , 
+    backgroundColor :'#FFF7FC',
+    borderColor: '#7659F1' , 
+    borderRadius : 20,
+    borderWidth: 2, 
+    justifyContent:'center',
+  //  alignContent:'center',
+    alignItems:'center'
+    
+  }
    
     
 })
