@@ -47,7 +47,7 @@ const Login = () => {
 
         setLoading(true);
         console.log("Login success =>", data);
-        navigation.navigate('Welcome');
+        navigation.navigate('Tabs');
 
 
       }

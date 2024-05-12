@@ -14,6 +14,7 @@ import Signup from "./signup/Signup";
 import Login from "./login/Login";
 import Welcome from "./login/Welcome";
 import { AuthContext, AuthProvider } from "./context/auth";
+import EnrolledCourses from "./Profile/EnrolledCourses";
 
 
 const Stack = createStackNavigator();
@@ -34,6 +35,8 @@ const AppNavigator = () => (
         <Stack.Screen name='Signup' component={Signup} />
           <Stack.Screen name='Login' component={Login} />
           <Stack.Screen name='Welcome' component={Welcome} />
+
+          <Stack.Screen name="EnrolledCourses" component={EnrolledCourses} /> 
 
     </Stack.Navigator>
     </AuthProvider>
