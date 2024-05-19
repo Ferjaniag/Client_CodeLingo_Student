@@ -18,6 +18,7 @@ import EnrolledCourses from "./Profile/EnrolledCourses";
 import InstructionsPage from './quiz/InstructionsPage';
 
 
+
 const Stack = createStackNavigator();
 
 const AppNavigator = () => (

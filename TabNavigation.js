@@ -4,7 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import SplashScreen from './SplashScreen';
 import ProfileScreen from './Profile/ProfileScreen';
 import { StyleSheet } from 'react-native';
-
+import EnrolledCourses from './Profile/EnrolledCourses';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { shadow } from 'react-native-paper';
 
@@ -42,7 +42,7 @@ export default function TabNavigation() {
         ),
       }}
       />
-       <Tab.Screen name="Splash" component={SplashScreen}
+       <Tab.Screen name="EnrolledCourses" component={EnrolledCourses}
        options={{
         tabBarLabel: 'Progress',
         tabBarIcon: () => (
