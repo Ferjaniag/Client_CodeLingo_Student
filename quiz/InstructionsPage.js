@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext,useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getQuizByID } from './QuizAPI';
+import { AuthContext } from "../context/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const InstructionsPage = ({route}) => {
+    const [state, setState] = useContext(AuthContext);
+
     const navigation = useNavigation();
     const quizId = route.params.quizId;
 
@@ -16,26 +20,77 @@ const InstructionsPage = ({route}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const fetchUser = async () => {
+        const dataString = await AsyncStorage.getItem("@auth");
+        const data = JSON.parse(dataString);
+        setState(data);
+        console.log(state.user._id);
+      };
+
+const handleStartQuiz = async() =>{
+    try {
+        const res = await fetch(`${process.env.API_URL}/getResults`, {
+            method: 'GET',
+        });
+        const results = await res.json();
+        const existingResult = results.find(
+            (result) => result.userId === state.user._id && result.quizId === quizId
+        );
+
+        if(existingResult) {
+            navigation.navigate('QuizPage', { quizId });
+        } else {
+            await fetch(`${process.env.API_URL}/createResult`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  quizId: quizId,
+                  quizName:quizData.quizName,
+                  userId: state.user._id,
+                  points: 0, 
+                  answers: [],
+                  resultStatus: 'Fail',
+                }),
+              });
+
+              navigation.navigate('QuizPage', { quizId });
+
+        }
+
+        
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+};
+
+
+    //! quiz details
+    const fetchData = async () => {
+        setIsLoading(true);
+
+        try {
+            const data = await getQuizByID(quizId);
+            setQuizData(data);
+            setQuizName(data.quizName);
+            setQuizDuration(data.quizDuration);
+            setTotalMarks(data.totalMarks);
+            setPassingMarks(data.passingMarks);
+            
+        } catch (error) {
+            setError(error);
+            
+        } finally {
+            setIsLoading(false);
+        }
+
+    };
+
     useEffect(()=> {
-        const fetchData = async () => {
-            setIsLoading(true);
-
-            try {
-                const data = await getQuizByID(quizId);
-                setQuizData(data);
-                setQuizName(data.quizName);
-                setQuizDuration(data.quizDuration);
-                setTotalMarks(data.totalMarks);
-                setPassingMarks(data.passingMarks);
-                
-            } catch (error) {
-                setError(error);
-                
-            } finally {
-                setIsLoading(false);
-            }
-
-        };
+      
+        fetchUser();
         fetchData();
     }, [quizId])
 
@@ -86,7 +141,7 @@ const InstructionsPage = ({route}) => {
                 </ScrollView>
                 <TouchableOpacity
                     style={styles.buttonStyle}
-                    onPress={() => navigation.navigate('Quiz')}
+                    onPress={handleStartQuiz}
                 >
                     <Text style={styles.textButton}>Start</Text>
                 </TouchableOpacity>
