@@ -21,7 +21,6 @@ const EnrolledCourses = () => {
         <View style={styles.courseBox}>
           <Text style={styles.courseTitle}>Java Foundations</Text>
         </View>
-        {/* Add more course boxes here */}
       </View>
     </View>
   );

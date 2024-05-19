@@ -4,6 +4,7 @@ import { View , StyleSheet, Text, TouchableOpacity , Image , ScrollView} from 'r
 import UnitSection from './UnitSection'
 import { useNavigation } from '@react-navigation/native' 
 import { getUnitsByIdCourse } from './UnitAPI'
+import QuizCard from '../quiz/QuizCard'
 
 export default function UnitsScreen( {route} ) {
 
@@ -83,7 +84,7 @@ courseName={course}/>
 
 </ScrollView>
 
-
+<QuizCard  courseID={courseID}/>
 
     </View>
 
