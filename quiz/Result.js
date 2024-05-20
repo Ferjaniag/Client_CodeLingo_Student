@@ -163,6 +163,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
+        backgroundColor: '#1F1244',
+
     },
     card: {
         backgroundColor: '#FFF',
