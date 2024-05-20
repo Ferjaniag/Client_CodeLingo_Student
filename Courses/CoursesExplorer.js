@@ -46,7 +46,7 @@ export default function CoursesExplorer( {route} ) {
 
 <View style= {styles.header}> 
 
-<TouchableOpacity onPress={()=> navigation.navigate('Road-Map')}>
+<TouchableOpacity onPress={()=> navigation.goBack()}>
       <Image
         source={require('../assets/icon-back.png')} 
         style = {styles.icon}

@@ -20,6 +20,7 @@ import QuizPage from './quiz/QuizPage';
 import Result from './quiz/Result';
 
 
+
 const Stack = createStackNavigator();
 
 const AppNavigator = () => (

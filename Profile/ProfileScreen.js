@@ -45,7 +45,9 @@ export default function ProfileScreen() {
             <Text style={styles.buttonText}>Logout</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('EnrolledCourses')}>
+           
             <Text style={styles.buttonText}>Enrolled Courses</Text>
+         
           </TouchableOpacity>
         </View>
       </View>
