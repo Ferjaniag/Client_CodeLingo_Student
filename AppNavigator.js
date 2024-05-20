@@ -17,6 +17,7 @@ import { AuthContext, AuthProvider } from "./context/auth";
 import EnrolledCourses from "./Profile/EnrolledCourses";
 import InstructionsPage from './quiz/InstructionsPage';
 import QuizPage from './quiz/QuizPage';
+import Result from './quiz/Result';
 
 
 const Stack = createStackNavigator();
@@ -41,6 +42,10 @@ const AppNavigator = () => (
           <Stack.Screen name="EnrolledCourses" component={EnrolledCourses} /> 
           <Stack.Screen name="InstructionsPage" component={InstructionsPage} /> 
           <Stack.Screen name="QuizPage" component={QuizPage} /> 
+
+
+
+          <Stack.Screen name="Result" component={Result} /> 
 
     </Stack.Navigator>
     </AuthProvider>
