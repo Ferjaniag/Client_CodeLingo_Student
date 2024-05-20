@@ -152,7 +152,14 @@ const Result = ({route}) =>{
                     <Text style={styles.detail}>Result: <Text style={styles.bold}>{commonValues.length}</Text> out of <Text style={styles.bold}>{quizDetails.totalMarks}</Text></Text>
                     <Text style={styles.detail}>Status: <Text style={styles.bold}>{status}</Text></Text>
                 </View>
+
             )}
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile')}>
+           
+           <Text style={styles.buttonText}>Go to Profile</Text>
+        
+         </TouchableOpacity>
+            
         </ScrollView>
     );
 };
@@ -190,6 +197,19 @@ const styles = StyleSheet.create({
     bold: {
         fontWeight: 'bold',
     },
+    button: {
+        backgroundColor: '#4CAF50',
+        borderRadius: 5,
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        marginTop:16,
+      },
+      buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+      },
 });
 
 export default Result;

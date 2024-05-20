@@ -32,6 +32,12 @@ const Signup = () => {
       return;
     }
 
+    if (password.length < 6) {
+      Alert.alert("Password must be at least 6 characters long");
+      setLoading(false);
+      return;
+    }
+
     console.log("message");
     console.log(name, email, password, confirmPassword);
 
