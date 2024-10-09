@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image } from 'react-native';
 import Text from "@kaloraat/react-native-text";
 import { AuthContext } from "../context/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from '@react-navigation/native';
-
+import AboutSection from './AboutSection';
+import AchievmentSection from './AchievementSection';
+import CompletedCourses from './CompletedCourses';
 export default function ProfileScreen() {
   const [state, setState] = useContext(AuthContext);
   const navigation = useNavigation();
@@ -27,29 +30,28 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Account Information</Text>
-        {state && state.user && (
-          <>
-            <View style={styles.infoContainer}>
-              <Text style={styles.label}>Username:</Text>
-              <Text style={styles.value}>{state.user.username}</Text>
-            </View>
-            <View style={styles.infoContainer}>
-              <Text style={styles.label}>Email:</Text>
-              <Text style={styles.value}>{state.user.email}</Text>
-            </View>
-          </>
-        )}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={signOut}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('EnrolledCourses')}>
-           
-            <Text style={styles.buttonText}>Enrolled Courses</Text>
-         
-          </TouchableOpacity>
-        </View>
+      <View style= {styles.header}> 
+
+<TouchableOpacity onPress={()=> navigation.goBack()}>
+      <Image
+        source={require('../assets/settings.png')} 
+        style = {styles.icon}
+      />
+    </TouchableOpacity>
+
+    <TouchableOpacity onPress={()=> signOut()}>
+      <Image
+        source={require('../assets/logout.png')} 
+        style = {styles.icon}
+      />
+    </TouchableOpacity>
+
+  
+   
+      </View>
+      <AboutSection/>
+      <AchievmentSection/>
+      <CompletedCourses/>
       </View>
     </SafeAreaView>
   );
@@ -59,12 +61,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1F1244',
+    alignItems: 'center',
+    justifyContent : 'flex-start',
   },
   content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+  
   },
   title: {
     fontSize: 24,
@@ -104,5 +108,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+
+  header : {
+    flexDirection: 'row',         // Align items in a row
+    justifyContent: 'space-between', // Push one to the left, other to the right
+    alignItems: 'center',         // Vertically center the items
+         // Add some padding if needed
+   
+    paddingTop  : 60,
+    width: '90%',                // Ensure the header takes full width
+      
+  } , 
+  icon : {
+  
+   width : 30 , 
+   height : 30, 
+   
   },
 });
