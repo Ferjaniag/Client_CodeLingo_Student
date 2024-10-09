@@ -55,7 +55,7 @@ const handleStartQuiz = async() =>{
                 }),
               });
 
-              navigation.navigate('QuizPage', { quizId });
+            navigation.navigate('QuizPage', { quizId });
 
         }
 
