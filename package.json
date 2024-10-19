@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.24.1",
+    "@expo/metro-runtime": "^3.2.3",
     "@kaloraat/react-native-text": "^1.0.4",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/bottom-tabs": "^6.5.20",
@@ -30,6 +31,7 @@
     "link": "^2.1.0",
     "npm": "^10.7.0",
     "react": "18.2.0",
+    "react-dom": "^18.3.1",
     "react-feather": "^2.0.10",
     "react-native": "^0.74.5",
     "react-native-circular-progress": "^1.4.0",
@@ -45,7 +47,8 @@
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-sound": "^0.11.2",
     "react-native-svg": "15.2.0",
-    "react-native-vector-icons": "^10.0.3"
+    "react-native-vector-icons": "^10.0.3",
+    "react-native-web": "^0.19.12"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
