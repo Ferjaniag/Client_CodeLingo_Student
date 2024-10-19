@@ -36,6 +36,8 @@ const handleStartQuiz = async() =>{
         const existingResult = results.find(
             (result) => result.userId === state.user._id && result.quizId === quizId
         );
+        console.log('again')
+
 
         if(existingResult) {
             navigation.navigate('QuizPage', { quizId });
@@ -120,23 +122,23 @@ const handleStartQuiz = async() =>{
                 <ScrollView style={styles.lessonContent}>
                     <View style={styles.bulletPointContainer}>
                         <View style={styles.bulletPoint} />
-                        <Text style={styles.bulletText}>Quiz must be completed in {quizDuration} mins</Text>
+                        <Text style={styles.bulletText}>Quiz must be completed in <Text style={styles.boldText}>{quizDuration} seconds</Text></Text>
                     </View>
                     <View style={styles.bulletPointContainer}>
                         <View style={styles.bulletPoint} />
-                        <Text style={styles.bulletText}>Quiz will be submitted automatically after{quizDuration} mins</Text>
+                        <Text style={styles.bulletText}>Quiz will be submitted automatically after <Text style={styles.boldText}>{quizDuration} seconds</Text></Text>
                     </View>
                     <View style={styles.bulletPointContainer}>
                         <View style={styles.bulletPoint} />
-                        <Text style={styles.bulletText}>Once submitted, you cannot change your answer</Text>
+                        <Text style={styles.bulletText}>Once submitted you cannot change your answer</Text>
                     </View>
                     <View style={styles.bulletPointContainer}>
                         <View style={styles.bulletPoint} />
-                        <Text style={styles.bulletText}>Total marks of the quiz is {totalMarks}</Text>
+                        <Text style={styles.bulletText}>Total marks of the quiz is <Text style={styles.boldText}>{totalMarks}</Text></Text>
                     </View>
                     <View style={styles.bulletPointContainer}>
                         <View style={styles.bulletPoint} />
-                        <Text style={styles.bulletText}>Passing marks of the quiz is {passingMarks}</Text>
+                        <Text style={styles.bulletText}>Passing marks of the quiz is <Text style={styles.boldText}>{passingMarks}</Text></Text>
                     </View>
                 </ScrollView>
                 <TouchableOpacity
@@ -155,74 +157,96 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#1F1244',
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        // justifyContent: 'flex-start',
+        paddingTop: 80,
     },
     header: {
         flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: 60,
-    },
-    icon: {
-        position: 'absolute',
-        left: 20,
-        top: 0,
-        width: 35,
-        height: 35,
-    },
-    title: {
-        color: '#35E9BC',
-        fontSize: 18,
-        marginLeft: 50,
-    },
-    lessonContainer: {
-        backgroundColor: '#FFF7FC',
-        width: '95%',
-        minHeight: '80%',
-        marginTop: 20,
-        borderRadius: 45,
-        padding: 20,
         alignItems: 'center',
-    },
-    lessonTitle: {
-        color: '#333333',
-        fontSize: 20,
-        fontWeight: '500',
-        marginBottom: 20,
-    },
-    lessonContent: {
         width: '100%',
+        paddingHorizontal: 30,
+        justifyContent: 'center',
     },
-    bulletPointContainer: {
+    backButton: {
+        position: 'absolute',
+        left: 40,
+        padding: 20,
+      },
+      icon: {
+        width: 30,
+        height: 30,
+      },
+      title: {
+        color: '#35E9BC', 
+        fontSize: 22,
+        fontWeight: '600',
+      },
+      lessonContainer: {
+        backgroundColor: '#FFF7FC', 
+        width: '100%',
+        borderRadius: 30,
+        padding: 28,
+        marginTop: 50,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.15,
+        shadowRadius: 10,
+        elevation: 6,
+        alignItems: 'center',
+      },
+      lessonTitle: {
+        color: '#333333',
+        fontSize: 24,
+        fontWeight: '600',
+        marginBottom: 20,
+      },
+      lessonContent: {
+        width: '100%',
+        maxHeight: '60%',
+      },
+      scrollContent: {
+        paddingBottom: 20,
+      },
+      bulletPointContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 15,
-    },
-    bulletPoint: {
-        width: 6,
-        height: 6,
+      },
+      bulletPoint: {
+        width: 8,
+        height: 8,
         backgroundColor: '#333333',
         borderRadius: 9999,
         marginRight: 10,
-    },
-    bulletText: {
+      },
+      bulletText: {
         color: '#333333',
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: '400',
-    },
-    buttonStyle: {
+      },
+      buttonStyle: {
         width: 240,
         height: 50,
-        backgroundColor: '#7659F1',
+        backgroundColor: '#6B52AE', 
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10,
-        marginTop: 45,
-    },
-    textButton: {
+        borderRadius: 25,
+        marginTop: 35,
+        shadowColor: '#6B52AE',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 4,
+      },
+      textButton: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 18,
+        fontWeight: '600',
         textAlign: 'center',
-    },
+      },
+      boldText: {
+        fontWeight: 'bold', 
+      },
 });
 
 export default InstructionsPage;

@@ -37,6 +37,7 @@ const Result = ({route}) =>{
 
                 });
                 const data = await res.json();
+                console.log('again')
                 if(res.ok){
                     setquizDetails(data);
                     console.log(quizDetails);
@@ -59,6 +60,8 @@ const Result = ({route}) =>{
                         method: 'GET',
                     });
                     const data = await res.json();
+                    console.log('again')
+
     
                     if (res.ok) {
                         setQuestions(data);
@@ -77,7 +80,8 @@ const Result = ({route}) =>{
                 try {
                     const res = await fetch(`${process.env.API_URL}/getOneResult/${state.user._id}/${quizId}`);
                     const data = await res.json();
-    
+                    console.log('again')
+
                     if (res.ok) {
                         setResultAnswers(data.answers);
                     }
@@ -107,7 +111,10 @@ const Result = ({route}) =>{
                     points:point,
                     resultStatus: status,
                     }),
+                    
                 });
+                console.log('again')
+
                 } catch (error) {
                 console.log(error.message);
                 }
@@ -127,6 +134,8 @@ const Result = ({route}) =>{
             const wa= quizDetails.totalMarks - cv.length
             setWrongAnswers(wa)
             setPoint(cv.length);
+            console.log('again')
+
             
                 if (cv.length === quizDetails.totalMarks) {
                     setStatus('Success');

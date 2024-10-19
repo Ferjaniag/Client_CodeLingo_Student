@@ -4,6 +4,7 @@ import axios from "axios";
 export const getFrontEndCourses = async () => {
     try {
         const response = await axios.get(`http://localhost:5002/get_FrontEnd_courses`);
+        console.log('again')
         return response.data;
     } catch (error) {
         console.error('Error fetching courses data :', error);

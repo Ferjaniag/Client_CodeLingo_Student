@@ -49,6 +49,7 @@ const QuizPage = ({ route }) => {
           method: "GET",
         });
         const data = await res.json();
+        console.log('again')
         if (res.ok) {
           setQuizDetails(data);
           console.log(quizDetails);
@@ -142,7 +143,7 @@ const QuizPage = ({ route }) => {
       </View>
 
       <View style={styles.questionContainer}>
-        <Text>Time remaining: {timer} seconds </Text>
+        <Text style={styles.timerText}>Time remaining: {timer} seconds </Text>
 
         <Text style={styles.questionText}>
           {questions[currentQuestionIndex]?.content}
@@ -182,67 +183,101 @@ const QuizPage = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1F1244",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    backgroundColor: '#1F1244', // Dark background
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: 60,
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 60,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width: '100%',
+    paddingHorizontal: 20,
   },
-  selectedOptionButton: {
-    backgroundColor: '#cce5ff',
-},
-  icon: {
-    position: "absolute",
-    left: 20,
+  backButton: {
+    padding: 10,
+    position: 'absolute',
+    left: 10,
     top: 0,
-    width: 35,
-    height: 35,
+    zIndex: 1,
+  },
+  icon: {
+    width: 30,
+    height: 30,
   },
   title: {
-    color: "#35E9BC",
-    fontSize: 18,
+    color: '#35E9BC',
+    fontSize: 22,
+    fontWeight: '600',
   },
   questionContainer: {
-    backgroundColor: "#FFF7FC",
-    width: "95%",
+    backgroundColor: '#FFF7FC',
+    width: '90%',
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 15,
     marginTop: 20,
-    minHeight: "70%",
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 4,
+  },
+  timerText: {
+    color: '#ff0000', 
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 10,
+    textAlign: 'center',
   },
   questionText: {
-    color: "#333333",
-    fontSize: 18,
-    fontWeight: "500",
+    color: '#333333',
+    fontSize: 20,
+    fontWeight: '500',
     marginBottom: 20,
+    textAlign: 'center',
   },
   optionButton: {
-    backgroundColor: "#f0f0f0",
+    backgroundColor: '#f0f0f0',
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
   },
+  selectedOptionButton: {
+    backgroundColor: '#d3e8ff', 
+    borderColor: '#0066cc',
+    borderWidth: 1,
+  },
   optionText: {
-    color: "#333333",
+    color: '#333333',
     fontSize: 16,
+    textAlign: 'center',
   },
   navigationButtons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "80%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
     marginTop: 20,
   },
   navButton: {
-    backgroundColor: "#7659F1",
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: '#7659F1',
+    padding: 12,
+    borderRadius: 25,
+    width: '45%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#7659F1',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  disabledNavButton: {
+    backgroundColor: '#aaa',
   },
   navButtonText: {
-    color: "white",
+    color: 'white',
     fontSize: 16,
+    fontWeight: '600',
   },
 });
 

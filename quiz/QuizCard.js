@@ -15,6 +15,7 @@ const QuizCard = ({ courseID }) => {
             try {
                 const quizzes = await getQuizByCourseId(courseID);
                 console.log('Fetched quiz data:', quizzes);
+                console.log('again')
                 setQuizData(quizzes);
             } catch (error) {
                 console.error('Error fetching quiz data:', error);
@@ -47,7 +48,7 @@ const QuizCard = ({ courseID }) => {
                         style={styles.courseBox}
                         onPress={() => navigation.navigate('InstructionsPage', { quizName: quiz.quizName, quizId:quiz._id })}
                     >
-                        <Text style={styles.courseTitle}>{quiz.quizName}</Text>
+                        <Text style={styles.courseTitle}>Take Quiz</Text>
                     </TouchableOpacity>
                 ))
             )
@@ -60,25 +61,31 @@ const QuizCard = ({ courseID }) => {
 };
 const styles = StyleSheet.create({
     courseBox: {
-        width: 142,
-        height: 91,
-        backgroundColor: '#7659F1',
-        borderRadius: 15,
-        marginHorizontal: 10,
-        marginBottom: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 4,
+        backgroundColor: '#4CAF50',  
+        paddingVertical: 15,         
+        paddingHorizontal: 25,       
+        borderRadius: 10,           
+        shadowColor: '#000',         
+        shadowOffset: { width: 0, height: 2 }, 
+        shadowOpacity: 0.3,          
+        shadowRadius: 4,             
+        elevation: 5,                
+        alignItems: 'center',        
+        justifyContent: 'center',    
+        marginVertical: 10, 
     },
     courseTitle: {
+        color: '#FFFFFF',            
+    fontSize: 18,                
+    fontWeight: '600',           
+    textTransform: 'uppercase'
+    },
+    notFound: {
         color: 'white',
         fontSize: 12,
         fontWeight: '700',
         lineHeight: 30,
+        marginTop: -100,
     },
 });
 
