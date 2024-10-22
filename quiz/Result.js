@@ -168,7 +168,12 @@ const Result = ({route}) =>{
            <Text style={styles.buttonText}>Go to Profile</Text>
         
          </TouchableOpacity>
-            
+
+         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ListOfBadges')}>
+           
+           <Text style={styles.buttonText}>See badges</Text>
+        
+         </TouchableOpacity>            
         </ScrollView>
     );
 };

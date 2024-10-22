@@ -52,6 +52,7 @@ export default function ProfileScreen() {
       <AboutSection/>
       <AchievmentSection/>
       <CompletedCourses/>
+  
       </View>
     </SafeAreaView>
   );

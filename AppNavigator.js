@@ -18,6 +18,7 @@ import EnrolledCourses from "./Profile/EnrolledCourses";
 import InstructionsPage from './quiz/InstructionsPage';
 import QuizPage from './quiz/QuizPage';
 import Result from './quiz/Result';
+import ListOfBadges from './badges/ListOfBadges';
 
 
 
@@ -47,6 +48,7 @@ const AppNavigator = () => (
 
 
           <Stack.Screen name="Result" component={Result} /> 
+          <Stack.Screen name="ListOfBadges" component={ListOfBadges} /> 
 
     </Stack.Navigator>
     </AuthProvider>
