@@ -2,8 +2,8 @@ import React , { useState, useEffect } from 'react'
 import { View , StyleSheet, Text,TouchableOpacity , Image, ScrollView } from 'react-native'
 import CoursesSection from './CourseSection'
 import { useNavigation } from '@react-navigation/native'
-import { getCoursesByCategory } from './CourseAPI'
-
+import { getCoursesByCategory, getEnrollementCourses } from './CourseAPI'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CoursesExplorer( {route} ) {
 
@@ -13,6 +13,7 @@ export default function CoursesExplorer( {route} ) {
   const [coursesData, setCoursesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+ 
 
   useEffect(() => {
       const fetchData = async () => {
@@ -20,7 +21,7 @@ export default function CoursesExplorer( {route} ) {
           try {
               const data = await getCoursesByCategory(category);
               setCoursesData(data);
-              console.log("data ", coursesData)
+             
               
           } catch (error) {
               setError(error);
@@ -31,8 +32,7 @@ export default function CoursesExplorer( {route} ) {
       };
 
       fetchData();
-  }, [category]); // Refetch data when userId changes
-
+  }, [category]); 
   if (isLoading) {
       return <Text>Loading...</Text>;
   }

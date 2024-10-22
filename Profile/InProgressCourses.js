@@ -4,38 +4,67 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {  Text, StyleSheet } from 'react-native';
 import { View, SafeAreaView,   Image } from 'react-native';
 import { getEnrollmentCourses } from './EnrollementAPI';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { AuthContext } from '../context/auth';
 import { LinearGradient } from 'expo-linear-gradient';
 
 
-export default function CompletedCourses() {
+export default function InProgressCourses() {
   const [state, setState] = useContext(AuthContext);
   const navigation = useNavigation();
+  const [coursesData, setCoursesData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [userId,setUserId]=useState();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const dataString = await AsyncStorage.getItem("@auth");
-      const data = JSON.parse(dataString);
-      setState(data);
-    };
-    fetchData();
-  }, [navigation]); // Refresh data when navigating back to this screen
+useEffect(() => {
+  const fetchData = async () => {
+    setIsLoading(true);
+    const dataString = await AsyncStorage.getItem("@auth");
+    const data = JSON.parse(dataString);
+    
+    // Make sure userId is set before making the API call
+    const userIdFromStorage = data.user._id;
+    setUserId(userIdFromStorage);
+    setState(data);
 
-  const signOut = async () => {
-    await AsyncStorage.removeItem("@auth");
-    setState({ token: "", user: null }); // Update the state after logout
-    navigation.navigate('Login');
+    if (userIdFromStorage) { // Ensure that userId is available
+      try {
+        const fetchedData = await getEnrollmentCourses(userIdFromStorage); // Pass the correct userId
+        setCoursesData(fetchedData);
+        console.log("Enrolled courses data: ", fetchedData);
+      } catch (error) {
+        setError(error);
+        console.log("Error fetching enrollment data: ", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setError(new Error('User ID not available.'));
+      setIsLoading(false);
+    }
   };
+
+  fetchData();
+}, []); // Empty dependency array ensures it only runs on mount
+
+ const renderCourse = ({ item }) => (
+    <TouchableOpacity
+      style={styles.course}
+      onPress={() => navigation.navigate('Units', { courseID: item.idCourse, course: item.courseName })}
+    >
+      <Text style={styles.titleAchivement}> {item.courseName}</Text>
+      <Progress.Bar progress={0.4} width={120} color={'#FCC329'} />
+    </TouchableOpacity>
+  );
+ 
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-
-
       <View style= {styles.container}>
-      <Text style={styles.title}> Courses</Text>
+      <Text style={styles.title}> Courses </Text>
 
 <LinearGradient
       colors={['#7659F1', 'rgba(118, 89, 241, 0.28)']}
@@ -44,29 +73,14 @@ export default function CompletedCourses() {
       end={{ x: 1, y: 0 }}
     >
 
-<View style = {styles.achievments}>
-
-
-    <View  style = {styles.course} > 
-    <Image
-        source={require('../assets/html-course.png')} 
-        style = {styles.courseIcon}
-      />
-<Text style={styles.titleAchivement}> HTML</Text>
-<Progress.Bar progress={0.4} width={100} color='#35E9BC' />
-    </View>
-
-    <View  style = {styles.course} > 
-    <Image
-        source={require('../assets/js-course.png')} 
-        style = {styles.courseIcon}
-      />
-<Text style={styles.titleAchivement}> JS</Text>
-<Progress.Bar progress={0.4} width={100} color='#35E9BC' />
-    </View>
-
-</View>
-
+ <FlatList
+            data={coursesData}
+            renderItem={renderCourse}
+            keyExtractor={(item, index) => index.toString()}
+            numColumns={2} // Set to display 2 courses per row
+            contentContainerStyle={styles.courseList}
+            ListEmptyComponent={<Text style={styles.notFound}>No courses enrolled yet!</Text>}
+          />
    
   
      
@@ -83,6 +97,7 @@ export default function CompletedCourses() {
     </SafeAreaView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

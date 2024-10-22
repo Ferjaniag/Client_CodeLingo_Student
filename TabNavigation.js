@@ -44,7 +44,7 @@ export default function TabNavigation() {
       />
        <Tab.Screen name="EnrolledCourses" component={EnrolledCourses}
        options={{
-        tabBarLabel: 'Progress',
+        tabBarLabel: 'Enrollements',
         tabBarIcon: () => (
             <MaterialCommunityIcons name="progress-star" size={26} />
         ),

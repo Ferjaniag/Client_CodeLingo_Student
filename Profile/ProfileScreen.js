@@ -7,7 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from '@react-navigation/native';
 import AboutSection from './AboutSection';
 import AchievmentSection from './AchievementSection';
-import CompletedCourses from './CompletedCourses';
+import InProgressCourses from './InProgressCourses';
 export default function ProfileScreen() {
   const [state, setState] = useContext(AuthContext);
   const navigation = useNavigation();
@@ -45,13 +45,10 @@ export default function ProfileScreen() {
         style = {styles.icon}
       />
     </TouchableOpacity>
-
-  
-   
       </View>
       <AboutSection/>
       <AchievmentSection/>
-      <CompletedCourses/>
+      <InProgressCourses/>
       </View>
     </SafeAreaView>
   );

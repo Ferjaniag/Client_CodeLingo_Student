@@ -19,30 +19,37 @@ const [state, setState] = useContext(AuthContext);
  
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-        setIsLoading(true);
-        const dataString = await AsyncStorage.getItem("@auth");
-        const data = JSON.parse(dataString);
-        setUserId(data.user._id)
-        setState(data);
-        try {
+useEffect(() => {
+  const fetchData = async () => {
+    setIsLoading(true);
+    const dataString = await AsyncStorage.getItem("@auth");
+    const data = JSON.parse(dataString);
     
-            const data = await getEnrollmentCourses(userId);
-            setCoursesData(data);
-         
-           console.log("data enrollementss ",coursesData);
-            
-        } catch (error) {
-            setError(error);
-            console.log("ERRROOORR ",error)
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    // Make sure userId is set before making the API call
+    const userIdFromStorage = data.user._id;
+    setUserId(userIdFromStorage);
+    setState(data);
 
-    fetchData();
-}, []); 
+    if (userIdFromStorage) { // Ensure that userId is available
+      try {
+        const fetchedData = await getEnrollmentCourses(userIdFromStorage); // Pass the correct userId
+        setCoursesData(fetchedData);
+        console.log("Enrolled courses data: ", fetchedData);
+      } catch (error) {
+        setError(error);
+        console.log("Error fetching enrollment data: ", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setError(new Error('User ID not available.'));
+      setIsLoading(false);
+    }
+  };
+
+  fetchData();
+}, []); // Empty dependency array ensures it only runs on mount
+ 
 
 if (isLoading) {
     return <Text>Loading...</Text>;
