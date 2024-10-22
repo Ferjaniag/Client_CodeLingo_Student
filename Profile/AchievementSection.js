@@ -65,9 +65,15 @@ export default function AchievmentSection() {
 </View>
 
    
-    <TouchableOpacity style={styles.button} >
-            <Text style={styles.buttonText}> Export Portfolio </Text>
-          </TouchableOpacity>
+<View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ListOfBadges')}>
+              <Text style={styles.buttonText}>See All Achievements</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.button} >
+              <Text style={styles.buttonText}>Export Portfolio</Text>
+            </TouchableOpacity>
+          </View>
      
    </LinearGradient>
 
@@ -116,9 +122,9 @@ const styles = StyleSheet.create({
   },
   shadowOpacity: 0.25,
   shadowRadius: 4,
-  elevation: 5, // For Android shadow
+  elevation: 5, 
   borderRadius: 15,
-   height : 150,
+   height : 155,
    width : 350 ,
    alignItems : 'center', 
   
@@ -136,12 +142,18 @@ const styles = StyleSheet.create({
     fontWeight:'bold'
   },
 
+  buttonContainer: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    marginTop: 10, 
+    width: '90%', 
+  },
   button: {
-    //padding : 10 , 
-    width : 'auto',
+    padding : 7 , 
+    // width : 'auto',
     marginTop : 5 ,
-    height : 25 ,
-    backgroundColor : '#7659F1' ,
+    // height : 25 ,
+    backgroundColor : '#35E9BC' ,
     justifyContent : 'center',
     alignContent : 'center',
     borderRadius : 10,
