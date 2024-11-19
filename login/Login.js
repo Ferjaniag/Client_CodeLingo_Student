@@ -46,8 +46,8 @@ const Login = () => {
         await AsyncStorage.setItem('@auth',JSON.stringify(data));
 
         setLoading(true);
-        console.log("Login success =>", data);
         console.log("again");
+        console.log("Login success =>", data);
         navigation.navigate('Tabs');
 
 
