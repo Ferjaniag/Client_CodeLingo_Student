@@ -19,6 +19,7 @@ import InstructionsPage from './quiz/InstructionsPage';
 import QuizPage from './quiz/QuizPage';
 import Result from './quiz/Result';
 import ListOfBadges from './badges/ListOfBadges';
+import ListOfPortfolios from './portfolio/Portfolio';
 
 
 
@@ -49,6 +50,7 @@ const AppNavigator = () => (
 
           <Stack.Screen name="Result" component={Result} /> 
           <Stack.Screen name="ListOfBadges" component={ListOfBadges} /> 
+          <Stack.Screen name="Portfolio" component={ListOfPortfolios} /> 
 
     </Stack.Navigator>
     </AuthProvider>

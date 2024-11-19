@@ -71,7 +71,7 @@ export default function AchievmentSection() {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} >
-              <Text style={styles.buttonText}>Export Portfolio</Text>
+              <Text style={styles.buttonText} onPress={() => navigation.navigate('Portfolio')}>Export Portfolio</Text>
             </TouchableOpacity>
           </View>
      
