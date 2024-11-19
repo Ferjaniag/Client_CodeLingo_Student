@@ -8,22 +8,24 @@ const PlayIcon = require('../assets/play.png');
 const LockIcon = require('../assets/lock.png');
 const DoneIcon = require('../assets/done.png');
 
-export default function LessonBloc(  {lessonNumber, isDone, idLesson, lessonName}) {
+export default function LessonBloc(  {courseId, unitId,courseName, unitName ,lessonNumber, isDone, idLesson, lessonName}) {
   
+ // console.log('FROM LESSON BLOC', enr)
   const navigation=useNavigation()
+
+
+  
 
   let iconSource;
 
-  if (isDone && lessonNumber === 1) {
+  if (isDone ) {
     iconSource = DoneIcon; 
-  } else if (lessonNumber === 1) {
-    iconSource = PlayIcon;
-  } else {
+  }  else {
     iconSource = LockIcon;
   }
 
   return (
-    <TouchableOpacity  onPress={() => navigation.navigate('Enroll-Lesson', {lessonNumber:lessonNumber , lessonID: idLesson, lessonName:lessonName})}>
+    <TouchableOpacity  onPress={() => navigation.navigate('Enroll-Lesson', {courseId:courseId, unitId:unitId, courseName:courseName, unitName:unitName,lessonNumber:lessonNumber , lessonID: idLesson, lessonName:lessonName})}>
     <View style={styles.sectionContainer}>
        
       <LinearGradient

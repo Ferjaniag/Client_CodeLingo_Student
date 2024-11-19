@@ -82,7 +82,7 @@ const ListOfBadges = ({ route }) => {
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Image source={require("../assets/icon-back.png")} style={styles.icon} />
       </TouchableOpacity>
-      <Text style={styles.title}>Your Badges</Text>
+      <Text style={styles.title}>My achievements</Text>
     </View>
     {loading ? (
       <ActivityIndicator size="large" color="#35E9BC" style={styles.loader} />

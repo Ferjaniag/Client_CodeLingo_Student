@@ -1,4 +1,4 @@
-import React , {useEffect,useState,useRef} from 'react'
+import React , {useEffect,useRef, useContext,useState} from 'react'
 import { View , StyleSheet, Text, Image, TouchableOpacity,useWindowDimensions,ProgressBarAndroid  } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import * as Progress from 'react-native-progress';
@@ -11,17 +11,20 @@ import PrbolemSolvExercise from './ProblemSolvExercise';
 import Dialog from "react-native-dialog";
 import InCorrectAnswer from '../components/InCorrectAnswer';
 import DoneExercise from './DoneExercises';
-
-
+import { updateEnrollProgress } from '../Profile/EnrollementAPI';
+import { AuthContext } from '../context/auth';
 
 
 export default function EnrollExercise({ route }) {
-
+ const [state, setState] = useContext(AuthContext);
   const navigation = useNavigation();
   const lessonName = route.params.lessonName;
   const lessonNumber = route.params.lessonNumber;
   const lessonID = route.params.lessonID;
-
+  const courseName = route.params.courseName;
+  const unitName = route.params.unitName;
+const unitId= route.params.unitId;
+const courseId= route.params.courseId;
   const [exercisesData, setExercisesData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentExercise, setCurrentExercise] = useState();
@@ -79,28 +82,63 @@ const CheckAnswer=()=> {
 
 }
 
-  const handleNextExercise = () => {
+const handleNextExercise = () => {
+  setVisibleCheck(false);
 
-    setVisibleCheck(false) ;
-    if (currentIndex < exercisesData.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+  console.log("exercise length", exercisesData.length);
 
-      const percount=  pourcentage + currentIndex / exercisesData.length ; 
-      console.log("pourcentage ",percount);
-      setPourcentage(percount);
+  if (currentIndex < exercisesData.length - 1) {
+    // Increment the current index
+    setCurrentIndex(currentIndex + 1);
 
-    } else {
-    setIsDoneExercises(true);
+    // Calculate the percentage based on the next index
+    const percount = (currentIndex + 1) / exercisesData.length;
+    console.log("POURCENTAAAGGGEE ", percount);
+
+    // Update the percentage
+    setPourcentage(percount);
+
+    // Update the lesson progress
+    handleLessonProgress(percount);
+  } else {
+    // If it's the last exercise, set the percentage to 1
     setPourcentage(1);
-    }
-  };
+
+    // Handle lesson progress and mark as done
+    handleLessonProgress(1);
+    setIsDoneExercises(true);
+  }
+};
+
+  const handleLessonProgress= async (percount) => {
+ 
+   try {
+// console.log('FROM HANDLE ', percount)
+     const data={
+      userId: state.user._id,
+      courseId: courseId,
+    unitId:unitId,
+    lessonId:lessonID,
+    percentage: percount*100
+     }
+
+     console.log('DATAAA FOR UPDATE LESSON' , data)
+ const result = await updateEnrollProgress(data);
+
+   } catch (err) {
+    console.log(err)
+   }
+   
+    
+   // navigation.goBack()
+  }
 
   return (
     <View style={styles.container}>
 
       <View style={styles.header}>
 
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() =>  navigation.goBack()}>
           <Image
             source={require('../assets/icon-back.png')}
             style={styles.icon}
@@ -139,7 +177,14 @@ const CheckAnswer=()=> {
    
       
    {isDoneExercises ? (
-  <DoneExercise />
+  <DoneExercise 
+  
+  courseId={courseId}
+   courseName = {courseName}
+    unitName= {unitName} 
+     unitID = {unitId}
+  
+  />
 ) : (
   !currentExercise ? (
     <Text>Loading...</Text>

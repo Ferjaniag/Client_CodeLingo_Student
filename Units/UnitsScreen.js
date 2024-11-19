@@ -5,21 +5,41 @@ import UnitSection from './UnitSection'
 import { useNavigation } from '@react-navigation/native' 
 import { getUnitsByIdCourse } from './UnitAPI'
 import QuizCard from '../quiz/QuizCard'
-
+import { getEnrollmentByIdCourse } from '../Profile/EnrollementAPI'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
+import { useFocusEffect } from '@react-navigation/native'
 export default function UnitsScreen( {route} ) {
 
   const navigation=useNavigation()
   const courseID= route.params.courseID
-  
   const course = route.params.course
 
 
  const [unitsData, setUnitsData] = useState([]);
+ const [enrollementData,setEnrollementData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-      const fetchData = async () => {
+
+  const fetchEnrollementData=async()=> {
+  setIsLoading(true);
+          try {
+              const data = await getEnrollmentByIdCourse(courseID);
+            
+            console.log('DATTTTAAA', data)
+              setEnrollementData(data[0])
+
+            
+           
+          } catch (error) {
+              setError(error);
+          } finally {
+              setIsLoading(false);
+          }
+  }
+
+
+  const fetchData = async () => {
           setIsLoading(true);
           try {
               const data = await getUnitsByIdCourse(courseID);
@@ -32,9 +52,26 @@ export default function UnitsScreen( {route} ) {
           }
       };
 
-      fetchData();
-  }, [courseID]); // Refetch data when ID changes
+    // Helper function to get specific enrollment data for a unit
+const getUnitEnrollmentData = (unitId) => {
+  return enrollementData.progress?.find(progressUnit => progressUnit.unitId === unitId);
+};
 
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchEnrollementData();
+    }, [])
+  );
+
+  useEffect(() => {
+    
+fetchEnrollementData();
+      fetchData();
+
+  }, [courseID]); // Refetch data when ID changes
+useEffect(() => {
+  console.log("Enrollment Data progress:", enrollementData.overallProgress);
+}, [enrollementData]); // Log when enrollementData updates
   if (isLoading) {
       return <Text>Loading...</Text>;
   }
@@ -62,10 +99,30 @@ export default function UnitsScreen( {route} ) {
       />
     </TouchableOpacity>
 
-    <Text style={styles.title}> Learning Path </Text>
+    <Text style={styles.title}> Learning Path {course} </Text>
    
 </View>
-<Text style={styles.courseName}> {course} </Text>
+<View style={styles.underHeader}>
+<Text style={styles.courseName}> Keep going !  </Text>
+<AnimatedCircularProgress
+style= {styles.progress}
+  size={65}
+  width={7}
+  fill={Math.floor(enrollementData.overallProgress)}
+  tintColor="#FCC329"
+  backgroundColor="#332462">
+  {
+    (fill) => (
+      <Text style={styles.progressNumber}>
+    {enrollementData.overallProgress !== undefined ? `${Math.floor(enrollementData.overallProgress)}%` : "%"}
+      </Text>
+    )
+  }
+</AnimatedCircularProgress>
+
+</View>
+
+
 
 <ScrollView>
 
@@ -75,9 +132,11 @@ export default function UnitsScreen( {route} ) {
 unitsData.map((unit,index)=> (
 <UnitSection 
 key={index}
+courseId={courseID}
 unitID={unit._id}
 unitName={unit.title}
-courseName={course}/>
+courseName={course}
+enrollementData={getUnitEnrollmentData(unit._id)}/>
 ))
 
 ) }
@@ -116,6 +175,23 @@ const styles = StyleSheet.create({
     // justifyContent : 'justify-content',
      margin : 5
     } , 
+     underHeader : {
+        flexDirection : 'row' ,
+        alignItems:"center",
+       marginTop: 10,
+
+      },
+       progress : {  
+     alignItems: 'flex-end',
+     marginLeft : 5,
+   
+      },
+      progressNumber : {
+        color :'white',
+        fontSize: 14 ,
+        fontWeight : 'bold', 
+        fontFamily : 'sans-serif' , 
+      },
     icon : {
       marginRight : 15 ,
       marginTop : 60 , 
@@ -126,7 +202,7 @@ const styles = StyleSheet.create({
     },
 courseName : {
   color : 'white',
-  fontSize : 20 , 
+  fontSize : 18 , 
   fontWeight : 'bold', 
   fontFamily : 'sans-serif' , 
   marginTop : 25 ,

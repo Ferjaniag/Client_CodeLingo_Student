@@ -1,12 +1,40 @@
-import React , {useEffect, useState}from 'react'
+import React , {useEffect, useState,useContext}from 'react'
 
 import { View , StyleSheet , ScrollView, Text, Image, TouchableOpacity} from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { updateEnrollProgress } from '../Profile/EnrollementAPI'
+import { AuthContext } from '../context/auth'
+import { getEnrollmentByIdCourse } from '../Profile/EnrollementAPI'
 
 
-export default function DoneExercise({}) {
+export default function DoneExercise({courseId:courseId, courseName : courseName,
+   unitName: unitName , unitID : unitID}) {
   
+    const navigation = useNavigation() 
+ const [state, setState] = useContext(AuthContext);
+    const [enrollementData, setEnrollementData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
   
-      
+      useEffect(() => {
+        const fetchData = async () => {
+            setIsLoading(true) ;
+            try {
+                const data = await getEnrollmentByIdCourse(courseId);
+             
+             const dataEnr= data[0].progress?.find(progressUnit => progressUnit.unitId === unitID);
+               console.log("DATTTA FROM DONE 1111  : ",data[0]) 
+             setEnrollementData(dataEnr)
+                console.log("DATTTA FROM DONE  : ",dataEnr)
+            } catch (error) {
+                setError(error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+  
+        fetchData();
+    }, [courseId]); // Refetch data when ID changes
 
   return (
     <View style={styles.container} > 
@@ -22,7 +50,7 @@ export default function DoneExercise({}) {
    
    <TouchableOpacity
               style={[styles.buttonNext]}
-              onPress={() => console.log("next lesson")}
+              onPress={() => navigation.navigate('Over-View-Lessons',{courseId:courseId, courseName : courseName, unitName: unitName , unitID : unitID, enrollementData : enrollementData})}
             >
               <Image
                 source={require('../assets/chevron-right.png')}

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+
 import { View, Alert, TouchableOpacity } from "react-native";
 import Text from "@kaloraat/react-native-text";
 import UserInput from "../components/UserInput";
 import RoundedButton from "../components/RoundedButton";
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
+
+import { useContext } from "react";
 
 
 const Signup = () => {

@@ -17,7 +17,10 @@ const navigation=useNavigation()
 const lessonName=route.params.lessonName
 const lessonNumber=route.params.lessonNumber
 const lessonID=route.params.lessonID
-
+const unitId=route.params.unitId
+const courseId=route.params.courseId
+const courseName=route.params.courseName
+const unitName=route.params.unitName
 const [lessonData,setLessonData]=useState({}) ; 
 const [isLoading, setIsLoading] = useState(false);
 const [error, setError] = useState(null);
@@ -90,7 +93,7 @@ if (error) {
          <TouchableOpacity
           style={styles.buttonStyle}
           onPress={() => {
-         navigation.navigate('Enroll-Exercise',{lessonName:lessonName ,
+         navigation.navigate('Enroll-Exercise',{courseId: courseId, unitId:unitId, courseName:courseName, unitName:unitName, lessonName:lessonName ,
            lessonNumber:lessonNumber , lessonID:lessonID})
           }}
         >

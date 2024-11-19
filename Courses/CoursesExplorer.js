@@ -4,7 +4,7 @@ import CoursesSection from './CourseSection'
 import { useNavigation } from '@react-navigation/native'
 import { getCoursesByCategory, getEnrollementCourses } from './CourseAPI'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useFocusEffect } from '@react-navigation/native'
 export default function CoursesExplorer( {route} ) {
 
   const navigation = useNavigation();
@@ -14,9 +14,7 @@ export default function CoursesExplorer( {route} ) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
  
-
-  useEffect(() => {
-      const fetchData = async () => {
+    const fetchData = async () => {
           setIsLoading(true);
           try {
               const data = await getCoursesByCategory(category);
@@ -30,9 +28,21 @@ export default function CoursesExplorer( {route} ) {
               setIsLoading(false);
           }
       };
+  useEffect(() => {
+  
 
       fetchData();
   }, [category]); 
+
+ useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
+
+
+
+
   if (isLoading) {
       return <Text>Loading...</Text>;
   }

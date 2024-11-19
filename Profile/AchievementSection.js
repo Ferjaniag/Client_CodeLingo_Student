@@ -40,6 +40,7 @@ export default function AchievmentSection() {
     >
 
 <View style = {styles.achievments}>
+  {/* 
 <View   style = {styles.achievment}>
 
 
@@ -61,7 +62,7 @@ export default function AchievmentSection() {
   
     <Text style={styles.titleAchivement}> HTML</Text>
     </View>
-
+*/}
 </View>
 
    

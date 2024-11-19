@@ -27,8 +27,12 @@ const Stack = createStackNavigator();
 const AppNavigator = () => (
   <AuthProvider>
   <Stack.Navigator screenOptions={{ headerShown: false }}>
-       
      <Stack.Screen name="Splash" component={SplashScreen} />
+         <Stack.Screen name='Login' component={Login} />
+       <Stack.Screen name='Signup' component={Signup} />
+        
+    
+     
         <Stack.Screen name="Road-Map" component={RoadMapExplorer} />
         <Stack.Screen name="Courses" component={CoursesExplorer} />
         <Stack.Screen name="Tabs" component={TabNavigation} />
@@ -37,16 +41,12 @@ const AppNavigator = () => (
         <Stack.Screen name="Enroll-Lesson" component={EnrollLessonScreen} />
         <Stack.Screen name="Enroll-Exercise" component={EnrollExercise} />
 
-        <Stack.Screen name='Signup' component={Signup} />
-          <Stack.Screen name='Login' component={Login} />
+        
           <Stack.Screen name='Welcome' component={Welcome} />
 
           <Stack.Screen name="EnrolledCourses" component={EnrolledCourses} /> 
           <Stack.Screen name="InstructionsPage" component={InstructionsPage} /> 
           <Stack.Screen name="QuizPage" component={QuizPage} /> 
-
-
-
           <Stack.Screen name="Result" component={Result} /> 
           <Stack.Screen name="ListOfBadges" component={ListOfBadges} /> 
 

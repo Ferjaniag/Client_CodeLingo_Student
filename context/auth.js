@@ -15,6 +15,8 @@ const AuthProvider = ({ children }) => {
       let data = await AsyncStorage.getItem("@auth");
       const as = JSON.parse(data);
       setstate({ ...state, user: as.user, token: as.token });
+
+    
     };
 
     loadFromAsyncStorage();

@@ -8,7 +8,9 @@ import { createEnrollementCourse } from '../Profile/EnrollementAPI';
 import { AuthContext } from '../context/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getEnrollementCourses } from './CourseAPI';
-
+import { getUnitsByIdCourse } from '../Units/UnitAPI';
+import * as Progress from 'react-native-progress';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function CoursesSection({ idCourse, title, description }) {
   const navigation = useNavigation();
@@ -17,9 +19,8 @@ export default function CoursesSection({ idCourse, title, description }) {
   const [visibleEnroll, setVisibleEnroll] = useState(false);
   const [dataEnroll, setDataEnroll] = useState({});
   const [isEnrolled, setIsEnrolled] = useState(false);  // Change initial state to false by default
-  
   const [loadingEnrollStatus, setLoadingEnrollStatus] = useState(true);  // New state to handle loadingconst navigation = useNavigation();
-
+ const [overalProgress, setOveralProgress] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       const dataString = await AsyncStorage.getItem("@auth");
@@ -49,13 +50,28 @@ export default function CoursesSection({ idCourse, title, description }) {
     setVisibleEnroll(false);
   };
 
+    useFocusEffect(
+    React.useCallback(() => {
+      isEnrolledCourse(idCourse);
+    }, [])
+  );
+
   const isEnrolledCourse = async (idCourse) => {
     let result = false; 
     try {
       const enrollmentsData = await getEnrollementCourses(userId);
+        // console.log('RESULT ENROLLEMENT ', enrollmentsData)
       if (enrollmentsData.length > 0) {
         result = enrollmentsData.some(enrollment => enrollment.idCourse === idCourse);
+   const progress = enrollmentsData.find(enrollment => enrollment.idCourse === idCourse)?.overalProgress || 0;
+
+  
+
+   setOveralProgress(Math.floor(progress))
+    
       }
+
+     
     } catch (error) {
       console.log("ERROR: ", error);
     } 
@@ -64,10 +80,14 @@ export default function CoursesSection({ idCourse, title, description }) {
 
   const enrollCourse = async () => {
     try {
+
+const units = await getUnitsByIdCourse(idCourse) ; 
+
       const data = {
         idUser: userId,
         idCourse: idCourse,
-        progress: 0
+        units:units,
+       
       };
       setDataEnroll(data);
       const enroll = await createEnrollementCourse(data);
@@ -107,7 +127,9 @@ export default function CoursesSection({ idCourse, title, description }) {
           ) : (
             isEnrolled ? (
               <TouchableOpacity style={styles.continueButton} onPress={() => navigation.navigate('Units', { courseID: idCourse, course: title })}>
-                <Text style={styles.buttonText}>Continue Learning</Text>
+                <Text style={styles.buttonText}>Continue Learning {overalProgress}%</Text>
+   <Progress.Bar progress={overalProgress/100} width={120} color={'#FCC329'}/>  
+
               </TouchableOpacity>
             ) : (
               <TouchableOpacity style={styles.button} onPress={() => showDialog()}>
@@ -184,13 +206,15 @@ const styles = StyleSheet.create({
       
         //padding : 10 , 
         width : 'auto',
-        marginTop : 5 ,
-        height : 30 ,
+        marginTop : 4 ,
+        height : 'auto' ,
+        padding : 5,
        
         backgroundColor : "#35E9BC" ,
         justifyContent : 'center',
         alignContent : 'center',
-        borderRadius : 10
+        borderRadius : 10,
+        alignItems : 'center'
     
   
     },

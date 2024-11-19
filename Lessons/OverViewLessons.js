@@ -4,21 +4,36 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { View , StyleSheet, TouchableOpacity, Image, Text , ScrollView} from 'react-native'
 import LessonBloc from './LessonBloc'
 import { getLessonsByUnit } from './LessonAPI';
-
+import { useFocusEffect } from '@react-navigation/native';
 export default function OverViewLessons( {route}) {
 
     const navigation = useNavigation() 
     const courseName= route.params.courseName 
     const unitName=route.params.unitName
     const unitID= route.params.unitID
-   
-
+   const courseId=route.params.courseId
+const enrollementData = route.params.enrollementData
     const [lessonsData, setLessonsData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
   
-    useEffect(() => {
-        const fetchData = async () => {
+//console.log('enrollement datttttaaa ', enrollementData)
+    const isLessonCompleted =(idLesson) => {
+
+      // enrollmentsData.find(enrollment => enrollment.idCourse === idCourse)?.overalProgress || 0;
+
+   //   return lessonsData.find(lesson => lesson._id === enrollementData.lessons.)
+       // Find the lesson with the given lessonId
+
+        const lesson = enrollementData.lessons.find(lesson => lesson.lessonId === idLesson);
+  
+     //   console.log(' IS COMPLETED ?', lesson ? lesson.completed : false)
+  // If lesson is found, return its "completed" status; otherwise, return false
+  return lesson ? lesson.completed : false;
+ 
+    }
+
+     const fetchData = async () => {
             setIsLoading(true);
             try {
                 const data = await getLessonsByUnit(unitID);
@@ -30,6 +45,14 @@ export default function OverViewLessons( {route}) {
                 setIsLoading(false);
             }
         };
+
+          useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
+    useEffect(() => {
+       
   
         fetchData();
     }, [unitID]); // Refetch data when ID changes
@@ -55,7 +78,7 @@ export default function OverViewLessons( {route}) {
       />
     </TouchableOpacity>
 
-    <Text style={styles.title}> {courseName} </Text>
+    <Text style={styles.title}> Learning Path {courseName} </Text>
    
 </View>
 <View style={styles.underHeader}>
@@ -65,13 +88,13 @@ export default function OverViewLessons( {route}) {
 style= {styles.progress}
   size={55}
   width={7}
-  fill={0}
+  fill= {enrollementData.percentage}
   tintColor="#FCC329"
   backgroundColor="#332462">
   {
     (fill) => (
       <Text style={styles.progressNumber}>
-     0%
+      {Math.floor(enrollementData.percentage)}%
       </Text>
     )
   }
@@ -88,10 +111,14 @@ style= {styles.progress}
   lessonsData.map((lesson,index)=> (
     <LessonBloc 
     key={index}
+    courseId={courseId}
+    unitId={unitID}
+    courseName={courseName}
+    unitName={unitName}
     lessonNumber={index+1}
     idLesson={lesson._id}
     lessonName={lesson.title}
-isDone={false}
+isDone={isLessonCompleted(lesson._id)}
 />
   ))
 )}
@@ -131,10 +158,10 @@ const styles = StyleSheet.create({
       } , 
       icon : {
         marginRight : 15 ,
-        marginTop : 60 , 
-        right : 85 ,
-       width : 35 , 
-       height : 35, 
+      marginTop : 60 , 
+      right : 65 ,
+     width : 35 , 
+     height : 35, 
        
       },
       unitTitle : {

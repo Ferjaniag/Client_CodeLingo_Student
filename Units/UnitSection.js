@@ -2,15 +2,25 @@ import React from 'react'
 
 import { View , StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-
+import { useState, useEffect} from 'react';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { useNavigation } from '@react-navigation/native';
 
-export default function UnitSection(  {unitName, unitID, courseName}) {
+export default function UnitSection(  {courseId, unitID, unitName,  courseName, enrollementData}) {
   
+  console.log('enrollementdata', enrollementData)
   const navigation=useNavigation()
+  const [percentage, setPercentage]=useState(0) ;
+
+ useEffect(()=> {
+
+  setPercentage(enrollementData.percentage) ;
+
+  console.log('percentagee ',enrollementData.percentage)
+ }, [unitID])
+
   return (
-    <TouchableOpacity  onPress={() => navigation.navigate('Over-View-Lessons', {courseName : courseName, unitName: unitName , unitID : unitID})}>
+    <TouchableOpacity  onPress={() => navigation.navigate('Over-View-Lessons', {courseId:courseId, courseName : courseName, unitName: unitName , unitID : unitID, enrollementData: enrollementData})}>
     <View style={styles.sectionContainer}>
        
       <LinearGradient
@@ -27,14 +37,15 @@ export default function UnitSection(  {unitName, unitID, courseName}) {
         <AnimatedCircularProgress
   size={40}
   width={6}
-  fill={0}
+  fill={percentage}
   tintColor="#35E9BC"
   backgroundColor="#332462">
   {
     (fill) => (
-      <Text style={styles.progress}>
-      0%
-      </Text>
+    <Text style={styles.progress}>
+  {Math.floor(percentage) === 100 ? "✓" : `${Math.floor(percentage)}%`}
+</Text>
+
     )
   }
 </AnimatedCircularProgress>

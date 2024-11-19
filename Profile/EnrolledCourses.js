@@ -76,7 +76,7 @@ if (error) {
         onPress={() => navigation.navigate('Units' , { courseID: course.idCourse , course : course.courseName})}
         >
           <Text style={styles.courseTitle}>{course.courseName}</Text>
-          <Progress.Bar progress={course.progress} width={120} color={'#FCC329'}/>
+          <Progress.Bar progress={course.overalProgress} width={120} color={'#FCC329'}/>
         </TouchableOpacity>
 
   ) )) }
