@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
       const as = JSON.parse(data);
       setstate({ ...state, user: as.user, token: as.token });
 
-    
+      console.log("tesstt");
     };
 
     loadFromAsyncStorage();

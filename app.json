@@ -22,7 +22,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ferjania.Client_CodeLingo_Student"
+      "package": "com.ferjania.Client_CodeLingo_Student",
+       "newArchEnabled": true,
+        "jsEngine": "hermes"
     },
     "web": {
       "favicon": "./assets/favicon.png"
