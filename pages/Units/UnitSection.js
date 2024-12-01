@@ -14,11 +14,6 @@ export default function UnitSection({
   enrollementData,
 }) {
   const navigation = useNavigation();
-  const [percentage, setPercentage] = useState(0);
-
-  useEffect(() => {
-    setPercentage(enrollementData.percentage);
-  }, [unitID]);
 
   return (
     <TouchableOpacity
@@ -44,15 +39,15 @@ export default function UnitSection({
             <AnimatedCircularProgress
               size={40}
               width={6}
-              fill={percentage}
+              fill={enrollementData.percentage}
               tintColor="#35E9BC"
               backgroundColor="#332462"
             >
               {(fill) => (
                 <Text style={styles.progress}>
-                  {Math.floor(percentage) === 100
+                  {Math.floor(enrollementData.percentage) === 100
                     ? "✓"
-                    : `${Math.floor(percentage)}%`}
+                    : `${Math.floor(enrollementData.percentage)}%`}
                 </Text>
               )}
             </AnimatedCircularProgress>

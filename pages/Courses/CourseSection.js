@@ -10,17 +10,16 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { createEnrollementCourse } from "../../services/EnrollementAPI";
-import { AuthContext } from "../../context/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getEnrollementCourses } from "../../services/CourseAPI";
 import { getUnitsByIdCourse } from "../../services/UnitAPI";
 import * as Progress from "react-native-progress";
 import { useFocusEffect } from "@react-navigation/native";
+import { AuthContext } from "../../context/auth";
 
 export default function CoursesSection({ idCourse, title, description }) {
   const navigation = useNavigation();
-  const [state, setState] = useContext(AuthContext);
-  const [userId, setUserId] = useState(null);
+  const [state] = useContext(AuthContext);
+
   const [visibleEnroll, setVisibleEnroll] = useState(false);
   const [dataEnroll, setDataEnroll] = useState({});
   const [isEnrolled, setIsEnrolled] = useState(false); // Change initial state to false by default
@@ -28,16 +27,8 @@ export default function CoursesSection({ idCourse, title, description }) {
   const [overalProgress, setOveralProgress] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const dataString = await AsyncStorage.getItem("@auth");
-      const data = JSON.parse(dataString);
-      setState(data);
-      setUserId(data.user._id);
-    };
-    fetchData();
-
     const checkEnrollment = async () => {
-      if (userId) {
+      if (state?.user._id) {
         setLoadingEnrollStatus(true); // Start loading enrollment status
         const enrolled = await isEnrolledCourse(idCourse);
         setIsEnrolled(enrolled);
@@ -46,7 +37,7 @@ export default function CoursesSection({ idCourse, title, description }) {
     };
 
     checkEnrollment();
-  }, [userId, idCourse]); // Add userId to dependencies
+  }, [state?.user._id, idCourse]); // Add userId to dependencies
 
   const showDialog = () => {
     setVisibleEnroll(true);
@@ -65,7 +56,7 @@ export default function CoursesSection({ idCourse, title, description }) {
   const isEnrolledCourse = async (idCourse) => {
     let result = false;
     try {
-      const enrollmentsData = await getEnrollementCourses(userId);
+      const enrollmentsData = await getEnrollementCourses(state?.user._id);
 
       if (enrollmentsData.length > 0) {
         result = enrollmentsData.some(
@@ -88,7 +79,7 @@ export default function CoursesSection({ idCourse, title, description }) {
       const units = await getUnitsByIdCourse(idCourse);
 
       const data = {
-        idUser: userId,
+        idUser: state?.user._id,
         idCourse: idCourse,
         units: units,
       };

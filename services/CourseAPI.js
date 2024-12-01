@@ -14,6 +14,7 @@ export const getCoursesByCategory = async (category) => {
 
 export const getEnrollementCourses = async (userId) => {
   try {
+    console.log("USER ID", userId);
     const response = await axios.get(
       `${process.env.API_URL}/enrollments/${userId}`
     );

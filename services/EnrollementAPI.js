@@ -13,15 +13,16 @@ export const getEnrollmentCourses = async (userId) => {
   }
 };
 
-export const getEnrollmentByIdCourse = async (idCourse) => {
+export const getEnrollmentByIdCourse = async (courseId, userId) => {
   try {
+    console.log("before sending", `${process.env.API_URL}/enrollment_idc`);
     const response = await axios.get(
-      `${process.env.API_URL}/enrollment_idc/${idCourse}`
+      `${process.env.API_URL}/enrollment_idc/${courseId}/${userId}`
     );
-    console.log("FROM FUNC enrollemett ");
+
     return response.data;
   } catch (error) {
-    console.error("Error fetching enrollment ddataa :", error);
+    console.error("Error fetching enrollment DATA1 :", error);
   }
 };
 

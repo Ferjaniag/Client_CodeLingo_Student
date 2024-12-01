@@ -1,11 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image, Button } from "react-native";
 import { getEnrollmentCourses } from "../../services/EnrollementAPI";
 import { TouchableOpacity } from "react-native";
 import * as Progress from "react-native-progress";
 import { AuthContext } from "../../context/auth";
+import {
+  generateContentCertificate,
+  generateCertificate,
+} from "../../services/portfolioService";
 
 const EnrolledCourses = () => {
   const [state, setState] = useContext(AuthContext);
@@ -13,39 +17,35 @@ const EnrolledCourses = () => {
   const [coursesData, setCoursesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [userId, setUserId] = useState();
-  //const userId='6648631c818ad87c98d07858'
+
+  const generatecertif = () => {};
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const dataString = await AsyncStorage.getItem("@auth");
-      const data = JSON.parse(dataString);
-
-      // Make sure userId is set before making the API call
-      const userIdFromStorage = data.user._id;
-      setUserId(userIdFromStorage);
-      setState(data);
-
-      if (userIdFromStorage) {
-        // Ensure that userId is available
-        try {
-          const fetchedData = await getEnrollmentCourses(userIdFromStorage); // Pass the correct userId
-          setCoursesData(fetchedData);
-          console.log("Enrolled courses data: ", fetchedData);
-        } catch (error) {
-          setError(error);
-          console.log("Error fetching enrollment data: ", error);
-        } finally {
-          setIsLoading(false);
-        }
-      } else {
-        setError(new Error("User ID not available."));
+      try {
+        const fetchedData = await getEnrollmentCourses(state?.user._id); // Pass the correct userId
+        setCoursesData(fetchedData);
+        console.log("Enrolled courses data: ", fetchedData);
+      } catch (error) {
+        setError(error);
+        console.log("Error fetching enrollment data: ", error);
+      } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
+    /*
+    const generatecertif = async () => {
+      generateCertificate(
+        generateContentCertificate("ferjania", "html", "12-12-2024")
+      );
+    };
+
+    generatecertif();
+
+    */
   }, []); // Empty dependency array ensures it only runs on mount
 
   if (isLoading) {
@@ -87,6 +87,7 @@ const EnrolledCourses = () => {
           ))
         )}
       </View>
+      <Button title="Generate !" onPress={generatecertif} />
     </View>
   );
 };
@@ -115,6 +116,13 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
     lineHeight: 36,
+  },
+  viewShot: {
+    width: 500,
+    height: 400,
+  },
+  webView: {
+    flex: 1,
   },
   courseContainer: {
     flexDirection: "row",

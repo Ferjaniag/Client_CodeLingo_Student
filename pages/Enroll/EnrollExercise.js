@@ -82,15 +82,12 @@ export default function EnrollExercise({ route }) {
   const handleNextExercise = () => {
     setVisibleCheck(false);
 
-    console.log("exercise length", exercisesData.length);
-
     if (currentIndex < exercisesData.length - 1) {
       // Increment the current index
       setCurrentIndex(currentIndex + 1);
 
       // Calculate the percentage based on the next index
       const percount = (currentIndex + 1) / exercisesData.length;
-      console.log("POURCENTAAAGGGEE ", percount);
 
       // Update the percentage
       setPourcentage(percount);
@@ -118,7 +115,6 @@ export default function EnrollExercise({ route }) {
         percentage: percount * 100,
       };
 
-      console.log("DATAAA FOR UPDATE LESSON", data);
       const result = await updateEnrollProgress(data);
     } catch (err) {
       console.log(err);
@@ -170,6 +166,7 @@ export default function EnrollExercise({ route }) {
               courseName={courseName}
               unitName={unitName}
               unitID={unitId}
+              lessonID={lessonID}
             />
           ) : !currentExercise ? (
             <Text>Loading...</Text>

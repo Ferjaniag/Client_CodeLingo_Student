@@ -26,10 +26,11 @@ const Stack = createStackNavigator();
 const AppNavigator = () => (
   <AuthProvider>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Tabs" component={TabNavigation} />
-      <Stack.Screen name="Road-Map" component={RoadMapExplorer} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="sign-up" component={Signup} />
+      <Stack.Screen name="Tabs" component={TabNavigation} />
+      <Stack.Screen name="Road-Map" component={RoadMapExplorer} />
+
       <Stack.Screen name="Splash" component={SplashScreen} />
 
       <Stack.Screen name="Courses" component={CoursesExplorer} />

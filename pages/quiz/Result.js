@@ -1,9 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ToastAndroid,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { AuthContext } from "../../context/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const Result = ({ route }) => {
   const navigation = useNavigation();
@@ -80,8 +87,11 @@ const Result = ({ route }) => {
           `${process.env.API_URL}/getOneResult/${state.user._id}/${quizId}`
         );
         const data = await res.json();
-        console.log("again");
 
+        notifyUser(
+          data.quizName,
+          new Date(data.createdAt).toISOString().split("T")[0]
+        );
         if (res.ok) {
           setResultAnswers(data.answers);
         }
@@ -123,6 +133,25 @@ const Result = ({ route }) => {
       updateStatus();
     }
   }, [questions, point, resultAnswers, quizDetails]);
+
+  const notifyUser = async (quizName, date) => {
+    try {
+      let userData = {
+        reciever: state?.user.email,
+        name: state?.user.username,
+        course: quizName,
+        date: date,
+      };
+
+      const respo = await axios.post(`${process.env.API_URL}/notify`, userData);
+      ToastAndroid.show(
+        "Congratulations! Please check your email to get your certificate",
+        ToastAndroid.SHORT
+      );
+    } catch (error) {
+      console.log("error notifying user ");
+    }
+  };
 
   const createQuestionObjects = () => {
     return questions.map((question) => question.correctOption);

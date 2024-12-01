@@ -15,22 +15,26 @@ import QuizCard from "../quiz/QuizCard";
 import { getEnrollmentByIdCourse } from "../../services/EnrollementAPI";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { useFocusEffect } from "@react-navigation/native";
+import { AuthContext } from "../../context/auth";
+import { useContext } from "react";
 export default function UnitsScreen({ route }) {
   const navigation = useNavigation();
   const courseID = route.params.courseID;
   const course = route.params.course;
-
+  const [state] = useContext(AuthContext);
   const [unitsData, setUnitsData] = useState([]);
   const [enrollementData, setEnrollementData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [overallProgress, setOveralProgress] = useState(0);
 
   const fetchEnrollementData = async () => {
     setIsLoading(true);
     try {
-      const data = await getEnrollmentByIdCourse(courseID);
+      const data = await getEnrollmentByIdCourse(courseID, state?.user._id);
 
-      setEnrollementData(data[0]);
+      setOveralProgress(Math.floor(data.overallProgress));
+      setEnrollementData(data);
     } catch (error) {
       setError(error);
     } finally {
@@ -67,9 +71,7 @@ export default function UnitsScreen({ route }) {
     fetchEnrollementData();
     fetchData();
   }, [courseID]); // Refetch data when ID changes
-  useEffect(() => {
-    console.log("Enrollment Data progress:", enrollementData.overallProgress);
-  }, [enrollementData]); // Log when enrollementData updates
+  useEffect(() => {}, [enrollementData]); // Log when enrollementData updates
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
@@ -91,12 +93,16 @@ export default function UnitsScreen({ route }) {
         <Text style={styles.title}> Learning Path {course} </Text>
       </View>
       <View style={styles.underHeader}>
-        <Text style={styles.courseName}> Keep going ! </Text>
+        {overallProgress === 100 ? (
+          <Text style={styles.courseName}> Congratulations !</Text>
+        ) : (
+          <Text style={styles.courseName}> Keep going !</Text>
+        )}
         <AnimatedCircularProgress
           style={styles.progress}
           size={65}
           width={7}
-          fill={Math.floor(enrollementData.overallProgress)}
+          fill={overallProgress}
           tintColor="#FCC329"
           backgroundColor="#332462"
         >
@@ -179,7 +185,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     fontFamily: "sans-serif",
-    marginTop: 25,
   },
   notFound: {
     color: "white",

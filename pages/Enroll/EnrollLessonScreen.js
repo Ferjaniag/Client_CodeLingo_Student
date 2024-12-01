@@ -17,7 +17,6 @@ import { getLessonByID } from "../../services/LessonAPI";
 import Html from "react-native-render-html";
 
 export default function EnrollLessonScreen({ route }) {
-  const { width, height } = useWindowDimensions();
   const navigation = useNavigation();
   const lessonName = route.params.lessonName;
   const lessonNumber = route.params.lessonNumber;

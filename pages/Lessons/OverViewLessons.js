@@ -29,7 +29,7 @@ export default function OverViewLessons({ route }) {
 
     //   return lessonsData.find(lesson => lesson._id === enrollementData.lessons.)
     // Find the lesson with the given lessonId
-
+    console.log("lesssoooonnnnnnnnnsss", enrollementData);
     const lesson = enrollementData.lessons.find(
       (lesson) => lesson.lessonId === idLesson
     );

@@ -10,9 +10,10 @@ export default function DoneExercise({
   courseName: courseName,
   unitName: unitName,
   unitID: unitID,
+  lessonID: lessonID,
 }) {
   const navigation = useNavigation();
-  const [state, setState] = useContext(AuthContext);
+  const [state] = useContext(AuthContext);
   const [enrollementData, setEnrollementData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,14 +22,17 @@ export default function DoneExercise({
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const data = await getEnrollmentByIdCourse(courseId);
+        const data = await getEnrollmentByIdCourse(courseId, state?.user._id);
 
-        const dataEnr = data[0].progress?.find(
+        {
+          /*  const dataEnr = data.progress?.find(
           (progressUnit) => progressUnit.unitId === unitID
-        );
-        console.log("DATTTA FROM DONE 1111  : ", data[0]);
-        setEnrollementData(dataEnr);
-        console.log("DATTTA FROM DONE  : ", dataEnr);
+        );  */
+        }
+
+        const unit = data.progress.find((unit) => unit.unitId === unitID);
+
+        setEnrollementData(unit);
       } catch (error) {
         setError(error);
       } finally {

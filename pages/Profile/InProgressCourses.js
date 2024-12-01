@@ -10,7 +10,7 @@ import { AuthContext } from "../../context/auth";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function InProgressCourses() {
-  const [state, setState] = useContext(AuthContext);
+  const [state] = useContext(AuthContext);
   const navigation = useNavigation();
   const [coursesData, setCoursesData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,35 +19,24 @@ export default function InProgressCourses() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
-      const dataString = await AsyncStorage.getItem("@auth");
-      const data = JSON.parse(dataString);
+      try {
+        const fetchedData = await getEnrollmentCourses(state?.user._id); // Pass the correct userId
 
-      // Make sure userId is set before making the API call
-      const userIdFromStorage = data.user._id;
-      setUserId(userIdFromStorage);
-      setState(data);
+        let inProgressCouses = fetchedData.filter(
+          (course) => course.overalProgress !== 100
+        );
 
-      if (userIdFromStorage) {
-        // Ensure that userId is available
-        try {
-          const fetchedData = await getEnrollmentCourses(userIdFromStorage); // Pass the correct userId
-          setCoursesData(fetchedData);
-          console.log("Enrolled courses data: ", fetchedData);
-        } catch (error) {
-          setError(error);
-          console.log("Error fetching enrollment data: ", error);
-        } finally {
-          setIsLoading(false);
-        }
-      } else {
-        setError(new Error("User ID not available."));
+        setCoursesData(inProgressCouses);
+      } catch (error) {
+        setError(error);
+        console.log("Error fetching enrollment data: ", error);
+      } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, []); // Empty dependency array ensures it only runs on mount
+  }, [state?.user._id]); // Empty dependency array ensures it only runs on mount
 
   const renderCourse = ({ item }) => (
     <TouchableOpacity
@@ -60,7 +49,11 @@ export default function InProgressCourses() {
       }
     >
       <Text style={styles.titleAchivement}> {item.courseName}</Text>
-      <Progress.Bar progress={0.4} width={120} color={"#FCC329"} />
+      <Progress.Bar
+        progress={item.overalProgress}
+        width={120}
+        color={"#FCC329"}
+      />
     </TouchableOpacity>
   );
 
