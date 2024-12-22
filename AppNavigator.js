@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "./pages/SplashScreen";
 import RoadMapExplorer from "./pages/RoadMap/RoadMapExplorer";
@@ -26,9 +26,10 @@ const Stack = createStackNavigator();
 const AppNavigator = () => (
   <AuthProvider>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Tabs" component={TabNavigation} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="sign-up" component={Signup} />
-      <Stack.Screen name="Tabs" component={TabNavigation} />
+
       <Stack.Screen name="Road-Map" component={RoadMapExplorer} />
 
       <Stack.Screen name="Splash" component={SplashScreen} />

@@ -11,7 +11,7 @@ export const fetchUserBadges = async (userId) => {
     );
     return response.data.badges;
   } catch (error) {
-    console.error("Error fetching user badges:", error);
+    console.error("Error fetching userrr badges:", error);
     throw error;
   }
 };
@@ -24,7 +24,7 @@ export const fetchBadgeDetails = async (badgeId) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching badge details:", error);
+    console.error("Error fetching badgeee details:", error);
     throw error;
   }
 };
@@ -73,7 +73,7 @@ export const generateAndSharePdf = async (html) => {
     });
     await shareAsync(file.uri);
   } catch (error) {
-    console.error("Error generating or sharing PDF:", error);
+    console.error("Error generaating or sharing PDF:", error);
     throw error;
   }
 };

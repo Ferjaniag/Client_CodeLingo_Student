@@ -6,7 +6,7 @@ export const getQuizByCourseId = async (courseID) => {
       `${process.env.API_URL}/get_quiz/${courseID}`
     );
     //   console.log(response.data);
-    ///    console.log('again')
+    console.log("agaiiiiin");
     return response.data;
   } catch (error) {
     console.error("Error fetching quiz data :", error);
@@ -18,7 +18,7 @@ export const getQuizByID = async (quizID) => {
     const response = await axios.get(
       `${process.env.API_URL}/getQuiz/${quizID}`
     );
-    console.log("again");
+    console.log("againnnnn");
     return response.data;
   } catch (error) {
     console.error("Error fetching quiz data :", error);

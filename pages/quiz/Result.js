@@ -142,14 +142,15 @@ const Result = ({ route }) => {
         course: quizName,
         date: date,
       };
-
+      console.log("test notify !!");
+      console.log("user data notify", userData);
       const respo = await axios.post(`${process.env.API_URL}/notify`, userData);
       ToastAndroid.show(
         "Congratulations! Please check your email to get your certificate",
         ToastAndroid.SHORT
       );
     } catch (error) {
-      console.log("error notifying user ");
+      console.log("error notifying user ", error);
     }
   };
 

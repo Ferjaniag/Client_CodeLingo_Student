@@ -18,8 +18,6 @@ const EnrolledCourses = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const generatecertif = () => {};
-
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -87,7 +85,6 @@ const EnrolledCourses = () => {
           ))
         )}
       </View>
-      <Button title="Generate !" onPress={generatecertif} />
     </View>
   );
 };

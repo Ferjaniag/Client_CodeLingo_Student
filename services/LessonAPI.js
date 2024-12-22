@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getLessonsByUnit = async (unitID) => {
   try {
-    console.log("test");
+    console.log("test lessons");
     const response = await axios.get(
       `${process.env.API_URL}/get_lessons/${unitID}`
     );
@@ -14,6 +14,7 @@ export const getLessonsByUnit = async (unitID) => {
 
 export const getLessonByID = async (lessonID) => {
   try {
+    console.log("test lesson id");
     const response = await axios.get(
       `${process.env.API_URL}/get_lesson/${lessonID}`
     );

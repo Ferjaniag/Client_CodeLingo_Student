@@ -5,7 +5,7 @@ export const getCoursesByCategory = async (category) => {
     const response = await axios.get(
       `${process.env.API_URL}/get_courses_by_category/${category}`
     );
-
+    console.log("test load courses");
     return response.data;
   } catch (error) {
     console.error("Error fetching courses data :", error);
@@ -21,6 +21,6 @@ export const getEnrollementCourses = async (userId) => {
 
     return response.data;
   } catch (error) {
-    console.error("Error fetching courses enrollements data :", error);
+    console.error("Error fetching courses enrollements!! :", error);
   }
 };

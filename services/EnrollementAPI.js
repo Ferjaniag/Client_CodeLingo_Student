@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const getEnrollmentCourses = async (userId) => {
   try {
+    console.log("mmff");
     const response = await axios.get(
       `${process.env.API_URL}/enrollments/${userId}`
     );
@@ -15,7 +16,7 @@ export const getEnrollmentCourses = async (userId) => {
 
 export const getEnrollmentByIdCourse = async (courseId, userId) => {
   try {
-    console.log("before sending", `${process.env.API_URL}/enrollment_idc`);
+    console.log("beforffe seending", `${process.env.API_URL}/enrollment_idc`);
     const response = await axios.get(
       `${process.env.API_URL}/enrollment_idc/${courseId}/${userId}`
     );
@@ -28,7 +29,8 @@ export const getEnrollmentByIdCourse = async (courseId, userId) => {
 
 export const createEnrollementCourse = async (enrollement) => {
   try {
-    console.log(`${process.env.API_URL}`);
+    console.log("teffst", enrollement);
+    console.log(`here : ${process.env.API_URL}`);
     const response = await axios.post(
       `${process.env.API_URL}/enrollment_student`,
       enrollement
@@ -41,13 +43,13 @@ export const createEnrollementCourse = async (enrollement) => {
 
 export const updateEnrollProgress = async (data) => {
   try {
-    //  console.log("data : ",data)
+    console.log("data : ", data);
     const response = await axios.put(
       `${process.env.API_URL}/enrollement/updateLessonProgress`,
       data
     );
     return response.data;
   } catch (error) {
-    console.error("Error creating new enrollment  :", error);
+    console.error("Error updating  enrollment progress  :", error);
   }
 };
